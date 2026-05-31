@@ -45,9 +45,9 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://scavio.dev"
+Homepage = "https://scavio.dev?utm_source=autogen_integration"
 Repository = "https://github.com/scavio-ai/autogen-scavio"
-Documentation = "https://scavio.dev/docs/autogen"
+Documentation = "https://scavio.dev/docs/autogen?utm_source=autogen_integration"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

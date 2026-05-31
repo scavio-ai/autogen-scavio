@@ -1,6 +1,6 @@
 # autogen-scavio
 
-AutoGen integration for the [Scavio Search API](https://scavio.dev). Provides 20 search tools across Google, Amazon, Walmart, YouTube, Reddit, and TikTok for use with AutoGen AI agents.
+AutoGen integration for the [Scavio Search API](https://scavio.dev?utm_source=autogen_integration). Provides 20 search tools across Google, Amazon, Walmart, YouTube, Reddit, and TikTok for use with AutoGen AI agents.
 
 ## Installation
 
@@ -10,7 +10,7 @@ pip install autogen-scavio
 
 ## Setup
 
-Get a free API key at [dashboard.scavio.dev](https://dashboard.scavio.dev) and set it as an environment variable:
+Get a free API key at [dashboard.scavio.dev](https://dashboard.scavio.dev?utm_source=autogen_integration) and set it as an environment variable:
 
 ```bash
 export SCAVIO_API_KEY="sk_live_..."
