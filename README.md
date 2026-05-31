@@ -28,7 +28,7 @@ tools = create_scavio_tools()
 
 agent = AssistantAgent(
     name="researcher",
-    model_client=OpenAIChatCompletionClient(model="gpt-4o"),
+    model_client=OpenAIChatCompletionClient(model="gpt-5.5"),
     tools=tools,
     system_message="You are a research assistant with access to search tools.",
 )
