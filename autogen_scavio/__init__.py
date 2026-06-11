@@ -7,6 +7,20 @@ from autogen_core.tools import FunctionTool
 from autogen_scavio._client import configure
 from autogen_scavio.tools.amazon import create_amazon_product_tool, create_amazon_search_tool
 from autogen_scavio.tools.google import create_web_search_tool
+from autogen_scavio.tools.instagram import (
+    create_instagram_comment_replies_tool,
+    create_instagram_post_comments_tool,
+    create_instagram_post_tool,
+    create_instagram_profile_tool,
+    create_instagram_search_hashtags_tool,
+    create_instagram_search_users_tool,
+    create_instagram_user_followers_tool,
+    create_instagram_user_followings_tool,
+    create_instagram_user_posts_tool,
+    create_instagram_user_reels_tool,
+    create_instagram_user_stories_tool,
+    create_instagram_user_tagged_tool,
+)
 from autogen_scavio.tools.reddit import create_reddit_post_tool, create_reddit_search_tool
 from autogen_scavio.tools.tiktok import (
     create_tiktok_comment_replies_tool,
@@ -24,7 +38,7 @@ from autogen_scavio.tools.tiktok import (
 from autogen_scavio.tools.walmart import create_walmart_product_tool, create_walmart_search_tool
 from autogen_scavio.tools.youtube import create_youtube_metadata_tool, create_youtube_search_tool
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 _PROVIDER_MAP: dict[str, list] = {
     "google": [create_web_search_tool],
@@ -44,6 +58,20 @@ _PROVIDER_MAP: dict[str, list] = {
         create_tiktok_hashtag_videos_tool,
         create_tiktok_user_followers_tool,
         create_tiktok_user_followings_tool,
+    ],
+    "instagram": [
+        create_instagram_profile_tool,
+        create_instagram_user_posts_tool,
+        create_instagram_user_reels_tool,
+        create_instagram_user_tagged_tool,
+        create_instagram_user_stories_tool,
+        create_instagram_post_tool,
+        create_instagram_post_comments_tool,
+        create_instagram_comment_replies_tool,
+        create_instagram_search_users_tool,
+        create_instagram_search_hashtags_tool,
+        create_instagram_user_followers_tool,
+        create_instagram_user_followings_tool,
     ],
 }
 
@@ -112,4 +140,16 @@ __all__ = [
     "create_tiktok_hashtag_videos_tool",
     "create_tiktok_user_followers_tool",
     "create_tiktok_user_followings_tool",
+    "create_instagram_profile_tool",
+    "create_instagram_user_posts_tool",
+    "create_instagram_user_reels_tool",
+    "create_instagram_user_tagged_tool",
+    "create_instagram_user_stories_tool",
+    "create_instagram_post_tool",
+    "create_instagram_post_comments_tool",
+    "create_instagram_comment_replies_tool",
+    "create_instagram_search_users_tool",
+    "create_instagram_search_hashtags_tool",
+    "create_instagram_user_followers_tool",
+    "create_instagram_user_followings_tool",
 ]

@@ -1,6 +1,6 @@
 # autogen-scavio
 
-AutoGen integration for the [Scavio Search API](https://scavio.dev?utm_source=autogen_integration). Provides 20 search tools across Google, Amazon, Walmart, YouTube, Reddit, and TikTok for use with AutoGen AI agents.
+AutoGen integration for the [Scavio Search API](https://scavio.dev?utm_source=autogen_integration). Provides 32 search tools across Google, Amazon, Walmart, YouTube, Reddit, TikTok, and Instagram for use with AutoGen AI agents.
 
 ## Installation
 
@@ -82,6 +82,18 @@ amazon_tool = create_amazon_search_tool(max_results=5)
 | TikTok | `scavio_tiktok_hashtag_videos` | Videos by hashtag |
 | TikTok | `scavio_tiktok_user_followers` | User's followers |
 | TikTok | `scavio_tiktok_user_followings` | User's followings |
+| Instagram | `scavio_instagram_profile` | User profile lookup |
+| Instagram | `scavio_instagram_user_posts` | User's posts |
+| Instagram | `scavio_instagram_user_reels` | User's reels |
+| Instagram | `scavio_instagram_user_tagged` | Posts user is tagged in |
+| Instagram | `scavio_instagram_user_stories` | User's active stories |
+| Instagram | `scavio_instagram_post` | Post details by url, media_id, or shortcode |
+| Instagram | `scavio_instagram_post_comments` | Post comments |
+| Instagram | `scavio_instagram_comment_replies` | Comment replies |
+| Instagram | `scavio_instagram_search_users` | User search by keyword |
+| Instagram | `scavio_instagram_search_hashtags` | Hashtag search by keyword |
+| Instagram | `scavio_instagram_user_followers` | User's followers |
+| Instagram | `scavio_instagram_user_followings` | User's followings |
 
 ## Configuration
 
