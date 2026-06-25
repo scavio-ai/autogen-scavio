@@ -34,8 +34,8 @@ class TestYouTubeSearchTool:
 
     @patch("autogen_scavio._client._async_client")
     @patch("autogen_scavio._client._configured_api_key", "test-key")
-    async def test_uses_search_param(self, _mock_client):
-        """Test that query maps to 'search' SDK param."""
+    async def test_uses_query_param(self, _mock_client):
+        """Test that query maps to the 'query' SDK param."""
         mock_client = MagicMock()
         mock_client.youtube.search = AsyncMock(
             return_value=mock_youtube_search_response()
@@ -45,8 +45,8 @@ class TestYouTubeSearchTool:
             tool = create_youtube_search_tool()
             await tool.run_json({"query": "test"}, None)
             call_kwargs = mock_client.youtube.search.call_args.kwargs
-            assert call_kwargs["search"] == "test"
-            assert "query" not in call_kwargs
+            assert call_kwargs["query"] == "test"
+            assert "search" not in call_kwargs
 
 
 class TestYouTubeMetadataTool:

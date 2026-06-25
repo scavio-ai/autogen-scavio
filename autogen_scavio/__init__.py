@@ -38,7 +38,7 @@ from autogen_scavio.tools.tiktok import (
 from autogen_scavio.tools.walmart import create_walmart_product_tool, create_walmart_search_tool
 from autogen_scavio.tools.youtube import create_youtube_metadata_tool, create_youtube_search_tool
 
-__version__ = "0.2.0"
+__version__ = "0.2.2"
 
 _PROVIDER_MAP: dict[str, list] = {
     "google": [create_web_search_tool],

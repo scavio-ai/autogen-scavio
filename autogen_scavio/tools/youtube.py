@@ -50,7 +50,7 @@ def create_youtube_search_tool(
         client = get_async_client()
 
         params = {
-            "search": query,
+            "query": query,
             "upload_date": upload_date,
             "type": video_type,
             "duration": duration,
