@@ -21,53 +21,50 @@ def create_web_search_tool(
     include_shopping_ads: bool = False,
     include_top_ads: bool = False,
     include_bottom_ads: bool = False,
-    nfpr: bool = False,
-    light_request: bool | None = None,
 ) -> FunctionTool:
     """Create a web search tool with the given configuration."""
 
     async def scavio_web_search(
         query: str,
-        search_type: str = "classic",
         country_code: str | None = None,
         language: str | None = None,
         device: str = "desktop",
         page: int = 1,
+        nfpr: bool = False,
     ) -> str:
-        """Search the web using the Scavio API.
+        """Search Google using the Scavio API.
 
         Args:
             query: The search query string.
-            search_type: Type of search to perform (e.g. "classic").
             country_code: Two-letter country code to localize results.
             language: Language code for results.
             device: Device type, either "desktop" or "mobile".
             page: Page number of results to retrieve.
+            nfpr: Disable spelling correction / auto-fixes when True.
 
         Returns:
-            JSON string with search results including titles, URLs,
-            descriptions, knowledge graphs, and related questions.
+            JSON string with search results including organic results
+            (title, link, snippet), knowledge graphs, and related
+            questions.
         """
         client = get_async_client()
 
         params: dict = {
             "query": query,
-            "search_type": search_type,
             "device": device,
-            "page": page,
             "nfpr": nfpr,
         }
         if country_code is not None:
-            params["country_code"] = country_code
+            params["gl"] = country_code
         if language is not None:
-            params["language"] = language
-        if light_request is not None:
-            params["light_request"] = light_request
+            params["hl"] = language
+        if page > 1:
+            params["start"] = (page - 1) * 10
 
         raw = await client.google.search(**params)
 
         # Truncate result lists to max_results
-        for key in ("results", "maps_results", "local_results", "news_results"):
+        for key in ("organic_results", "maps_results", "local_results", "news_results"):
             if isinstance(raw.get(key), list) and len(raw[key]) > max_results:
                 raw[key] = raw[key][:max_results]
 
@@ -103,8 +100,8 @@ def create_web_search_tool(
     return FunctionTool(
         scavio_web_search,
         description=(
-            "Search the web using the Scavio API. Returns search results "
-            "with titles, URLs, descriptions, knowledge graphs, and "
-            "related questions."
+            "Search Google via the Scavio API (1 credit). Returns organic "
+            "results with titles, links, and snippets, plus knowledge "
+            "graphs and related questions when available."
         ),
     )
