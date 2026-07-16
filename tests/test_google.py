@@ -28,7 +28,9 @@ class TestWebSearchTool:
             tool = create_web_search_tool(max_results=3)
             result = await tool.run_json({"query": "test"}, None)
             parsed = json.loads(result)
-            assert len(parsed["results"]) == 3
+            assert len(parsed["organic_results"]) == 3
+            assert parsed["organic_results"][0]["link"].startswith("https://")
+            assert "snippet" in parsed["organic_results"][0]
 
     @patch("autogen_scavio._client._async_client")
     @patch("autogen_scavio._client._configured_api_key", "test-key")
@@ -59,13 +61,22 @@ class TestWebSearchTool:
             await tool.run_json(
                 {
                     "query": "test",
-                    "search_type": "news",
                     "country_code": "us",
+                    "language": "en",
+                    "page": 3,
                 },
                 None,
             )
             mock_client.google.search.assert_called_once()
             call_kwargs = mock_client.google.search.call_args.kwargs
             assert call_kwargs["query"] == "test"
-            assert call_kwargs["search_type"] == "news"
-            assert call_kwargs["country_code"] == "us"
+            # v1 params are mapped to their v2 equivalents.
+            assert call_kwargs["gl"] == "us"
+            assert call_kwargs["hl"] == "en"
+            assert call_kwargs["start"] == 20
+            # Dead v1 params must not be forwarded.
+            assert "search_type" not in call_kwargs
+            assert "light_request" not in call_kwargs
+            assert "country_code" not in call_kwargs
+            assert "language" not in call_kwargs
+            assert "page" not in call_kwargs
