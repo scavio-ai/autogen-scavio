@@ -79,6 +79,109 @@ def mock_youtube_metadata_response() -> dict:
     }
 
 
+def mock_youtube_video_response() -> dict:
+    return {
+        "credits_used": 1,
+        "data": {
+            "video_id": "vid_1",
+            "title": "Test Video",
+            "author": "Test Channel",
+            "channel_id": "chan_1",
+            "view_count": 10000,
+            "length_seconds": 300,
+            "captions": [
+                {"language_code": "en", "language_name": "English", "url": "https://x/1"},
+            ],
+        },
+    }
+
+
+def mock_youtube_comments_response(num_comments: int = 10) -> dict:
+    return {
+        "credits_used": 1,
+        "data": {
+            "comments": [
+                {
+                    "comment_id": f"c_{i}",
+                    "text": f"Comment {i}",
+                    "like_count": i * 10,
+                    "reply_count": i,
+                    "author": {"channel_id": f"chan_{i}", "name": f"user_{i}"},
+                }
+                for i in range(1, num_comments + 1)
+            ],
+            "next_cursor": "next",
+            "has_more": True,
+        },
+    }
+
+
+def mock_youtube_transcript_response() -> dict:
+    return {
+        "credits_used": 8,
+        "data": {
+            "video_id": "vid_1",
+            "language_code": "en",
+            "language_name": "English",
+            "format": "txt",
+            "content": "This is a transcript.",
+        },
+    }
+
+
+def mock_youtube_channel_response() -> dict:
+    return {
+        "credits_used": 1,
+        "data": {
+            "channel_id": "chan_1",
+            "title": "Test Channel",
+            "description": "A test channel.",
+            "subscriber_count": 509000000,
+            "video_count": 993,
+            "view_count": 134561410625,
+        },
+    }
+
+
+def mock_youtube_channel_videos_response(num_results: int = 10) -> dict:
+    return {
+        "credits_used": 1,
+        "data": {
+            "channel_id": "chan_1",
+            "results": [
+                {
+                    "video_id": f"vid_{i}",
+                    "title": f"Video {i}",
+                    "view_count": 1000 * i,
+                    "duration_text": "10:00",
+                    "is_live": False,
+                }
+                for i in range(1, num_results + 1)
+            ],
+            "next_cursor": "next",
+            "has_more": True,
+        },
+    }
+
+
+def mock_youtube_streams_response() -> dict:
+    return {
+        "credits_used": 3,
+        "data": {
+            "video_id": "vid_1",
+            "title": "Test Video",
+            "author": "Test Channel",
+            "length_seconds": 300,
+            "view_count": 10000,
+            "is_live": False,
+            "formats": [
+                {"itag": 18, "url": "https://x/stream", "mime_type": "video/mp4"},
+            ],
+            "available_qualities": ["720p", "360p"],
+        },
+    }
+
+
 def mock_walmart_search_response(num_products: int = 10) -> dict:
     return {
         "credits_used": 1,
