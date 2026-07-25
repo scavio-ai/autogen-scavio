@@ -36,14 +36,32 @@ from autogen_scavio.tools.tiktok import (
     create_tiktok_video_tool,
 )
 from autogen_scavio.tools.walmart import create_walmart_product_tool, create_walmart_search_tool
-from autogen_scavio.tools.youtube import create_youtube_metadata_tool, create_youtube_search_tool
+from autogen_scavio.tools.youtube import (
+    create_youtube_channel_tool,
+    create_youtube_channel_videos_tool,
+    create_youtube_comments_tool,
+    create_youtube_metadata_tool,
+    create_youtube_search_tool,
+    create_youtube_streams_tool,
+    create_youtube_transcript_tool,
+    create_youtube_video_tool,
+)
 
 __version__ = "0.2.3"
 
 _PROVIDER_MAP: dict[str, list] = {
     "google": [create_web_search_tool],
     "amazon": [create_amazon_search_tool, create_amazon_product_tool],
-    "youtube": [create_youtube_search_tool, create_youtube_metadata_tool],
+    "youtube": [
+        create_youtube_search_tool,
+        create_youtube_video_tool,
+        create_youtube_metadata_tool,
+        create_youtube_comments_tool,
+        create_youtube_transcript_tool,
+        create_youtube_channel_tool,
+        create_youtube_channel_videos_tool,
+        create_youtube_streams_tool,
+    ],
     "walmart": [create_walmart_search_tool, create_walmart_product_tool],
     "reddit": [create_reddit_search_tool, create_reddit_post_tool],
     "tiktok": [
@@ -124,7 +142,13 @@ __all__ = [
     "create_amazon_search_tool",
     "create_amazon_product_tool",
     "create_youtube_search_tool",
+    "create_youtube_video_tool",
     "create_youtube_metadata_tool",
+    "create_youtube_comments_tool",
+    "create_youtube_transcript_tool",
+    "create_youtube_channel_tool",
+    "create_youtube_channel_videos_tool",
+    "create_youtube_streams_tool",
     "create_walmart_search_tool",
     "create_walmart_product_tool",
     "create_reddit_search_tool",
