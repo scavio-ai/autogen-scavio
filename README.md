@@ -1,6 +1,6 @@
 # autogen-scavio
 
-AutoGen integration for the [Scavio Search API](https://scavio.dev?utm_source=autogen_integration), a [search API for AI agents](https://scavio.dev/search-api-for-ai-agents). Provides 32 search tools across Google, Amazon, Walmart, YouTube, Reddit, TikTok, and Instagram for use with AutoGen AI agents.
+AutoGen integration for the [Scavio Search API](https://scavio.dev?utm_source=autogen_integration), a [search API for AI agents](https://scavio.dev/search-api-for-ai-agents). Provides 47 search tools across Google, Amazon, Walmart, YouTube, Reddit, TikTok, TikTok Shop, and Instagram for use with AutoGen AI agents.
 
 ## Installation
 
@@ -58,13 +58,24 @@ web_tool = create_web_search_tool(max_results=10)
 amazon_tool = create_amazon_search_tool(max_results=5)
 ```
 
+> **Amazon changed in 0.4.0 (breaking).** The upstream provider moved. `domain`
+> is replaced by `country`, a two-letter marketplace code (`us`, `gb` -- the UK
+> is `gb`, not `uk` -- `de`, `jp`, ...). `sort_by`, `pages`, `category_id`,
+> `merchant_id`, `language`, `currency`, `device`, `zip_code` and
+> `autoselect_variant` are gone: the marketplace ignores all of them, and
+> `sort_by` was verified to return the identical unordered set for every value,
+> so they are removed rather than kept as silent no-ops. Responses are
+> normalized -- `price` is a number with a sibling `currency`, and `buybox` is
+> gone (use `scavio_amazon_offers`).
+
 ## Available Tools
 
 | Provider | Tool | Description |
 |----------|------|-------------|
 | Google | `scavio_web_search` | Web search with knowledge graphs and related questions |
-| Amazon | `scavio_amazon_search` | Product search across 20+ marketplaces |
+| Amazon | `scavio_amazon_search` | Product search across 22 marketplaces |
 | Amazon | `scavio_amazon_product` | Product details by ASIN |
+| Amazon | `scavio_amazon_offers` | Every seller offer for an ASIN, including the buy-box winner |
 | YouTube | `scavio_youtube_search` | Video search with filters |
 | YouTube | `scavio_youtube_metadata` | Video metadata by ID |
 | Walmart | `scavio_walmart_search` | Product search with price/fulfillment filters |
@@ -82,6 +93,14 @@ amazon_tool = create_amazon_search_tool(max_results=5)
 | TikTok | `scavio_tiktok_hashtag_videos` | Videos by hashtag |
 | TikTok | `scavio_tiktok_user_followers` | User's followers |
 | TikTok | `scavio_tiktok_user_followings` | User's followings |
+| TikTok Shop | `scavio_tiktok_shop_search` | Product search by keyword (US), with exact prices |
+| TikTok Shop | `scavio_tiktok_shop_search_suggestions` | Keyword autocomplete across 8 regions |
+| TikTok Shop | `scavio_tiktok_shop_product` | Full product detail (no price -- upstream masks it) |
+| TikTok Shop | `scavio_tiktok_shop_product_reviews` | Paginated reviews, up to 200 per call |
+| TikTok Shop | `scavio_tiktok_shop_categories` | Global category tree (240 nodes, 2 levels) |
+| TikTok Shop | `scavio_tiktok_shop_category_products` | Products under a category, with exact prices |
+| TikTok Shop | `scavio_tiktok_shop_shop_products` | A seller's catalog, with exact prices |
+| TikTok Shop | `scavio_tiktok_shop_resolve` | Resolve a Shop URL or share link to an id |
 | Instagram | `scavio_instagram_profile` | User profile lookup |
 | Instagram | `scavio_instagram_user_posts` | User's posts |
 | Instagram | `scavio_instagram_user_reels` | User's reels |
@@ -94,6 +113,24 @@ amazon_tool = create_amazon_search_tool(max_results=5)
 | Instagram | `scavio_instagram_search_hashtags` | Hashtag search by keyword |
 | Instagram | `scavio_instagram_user_followers` | User's followers |
 | Instagram | `scavio_instagram_user_followings` | User's followings |
+
+### TikTok Shop caveats
+
+```python
+tools = create_scavio_tools(providers=["tiktok_shop"])
+```
+
+Two limits are worth knowing before chaining these tools:
+
+- `scavio_tiktok_shop_product` resolves only about 44% of the product ids that
+  `scavio_tiktok_shop_search` returns. Upstream has no detail data for the rest,
+  so a not-found result is a normal outcome rather than an error -- skip the
+  product instead of retrying. Search is a listing source, not the first leg of a
+  reliable search-then-detail pipeline.
+- `scavio_tiktok_shop_product` does not return a price. Upstream masks the digits
+  on the product page, so `price.current` and `price.original` come back null.
+  Exact prices are on `scavio_tiktok_shop_search`,
+  `scavio_tiktok_shop_shop_products` and `scavio_tiktok_shop_category_products`.
 
 ## Configuration
 
