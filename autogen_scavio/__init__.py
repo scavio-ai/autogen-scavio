@@ -5,7 +5,11 @@ from __future__ import annotations
 from autogen_core.tools import FunctionTool
 
 from autogen_scavio._client import configure
-from autogen_scavio.tools.amazon import create_amazon_product_tool, create_amazon_search_tool
+from autogen_scavio.tools.amazon import (
+    create_amazon_offers_tool,
+    create_amazon_product_tool,
+    create_amazon_search_tool,
+)
 from autogen_scavio.tools.google import create_web_search_tool
 from autogen_scavio.tools.instagram import (
     create_instagram_comment_replies_tool,
@@ -35,6 +39,16 @@ from autogen_scavio.tools.tiktok import (
     create_tiktok_video_comments_tool,
     create_tiktok_video_tool,
 )
+from autogen_scavio.tools.tiktok_shop import (
+    create_tiktok_shop_categories_tool,
+    create_tiktok_shop_category_products_tool,
+    create_tiktok_shop_product_reviews_tool,
+    create_tiktok_shop_product_tool,
+    create_tiktok_shop_resolve_tool,
+    create_tiktok_shop_search_suggestions_tool,
+    create_tiktok_shop_search_tool,
+    create_tiktok_shop_shop_products_tool,
+)
 from autogen_scavio.tools.walmart import create_walmart_product_tool, create_walmart_search_tool
 from autogen_scavio.tools.youtube import (
     create_youtube_channel_tool,
@@ -47,11 +61,15 @@ from autogen_scavio.tools.youtube import (
     create_youtube_video_tool,
 )
 
-__version__ = "0.2.3"
+__version__ = "0.3.0"
 
 _PROVIDER_MAP: dict[str, list] = {
     "google": [create_web_search_tool],
-    "amazon": [create_amazon_search_tool, create_amazon_product_tool],
+    "amazon": [
+        create_amazon_search_tool,
+        create_amazon_product_tool,
+        create_amazon_offers_tool,
+    ],
     "youtube": [
         create_youtube_search_tool,
         create_youtube_video_tool,
@@ -76,6 +94,16 @@ _PROVIDER_MAP: dict[str, list] = {
         create_tiktok_hashtag_videos_tool,
         create_tiktok_user_followers_tool,
         create_tiktok_user_followings_tool,
+    ],
+    "tiktok_shop": [
+        create_tiktok_shop_search_tool,
+        create_tiktok_shop_search_suggestions_tool,
+        create_tiktok_shop_product_tool,
+        create_tiktok_shop_product_reviews_tool,
+        create_tiktok_shop_categories_tool,
+        create_tiktok_shop_category_products_tool,
+        create_tiktok_shop_shop_products_tool,
+        create_tiktok_shop_resolve_tool,
     ],
     "instagram": [
         create_instagram_profile_tool,
@@ -141,6 +169,7 @@ __all__ = [
     "create_web_search_tool",
     "create_amazon_search_tool",
     "create_amazon_product_tool",
+    "create_amazon_offers_tool",
     "create_youtube_search_tool",
     "create_youtube_video_tool",
     "create_youtube_metadata_tool",
@@ -164,6 +193,14 @@ __all__ = [
     "create_tiktok_hashtag_videos_tool",
     "create_tiktok_user_followers_tool",
     "create_tiktok_user_followings_tool",
+    "create_tiktok_shop_search_tool",
+    "create_tiktok_shop_search_suggestions_tool",
+    "create_tiktok_shop_product_tool",
+    "create_tiktok_shop_product_reviews_tool",
+    "create_tiktok_shop_categories_tool",
+    "create_tiktok_shop_category_products_tool",
+    "create_tiktok_shop_shop_products_tool",
+    "create_tiktok_shop_resolve_tool",
     "create_instagram_profile_tool",
     "create_instagram_user_posts_tool",
     "create_instagram_user_reels_tool",
