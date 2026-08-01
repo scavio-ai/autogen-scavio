@@ -61,7 +61,7 @@ from autogen_scavio.tools.youtube import (
     create_youtube_video_tool,
 )
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 
 _PROVIDER_MAP: dict[str, list] = {
     "google": [create_web_search_tool],
