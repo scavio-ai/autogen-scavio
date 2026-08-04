@@ -70,8 +70,8 @@ def create_amazon_search_tool(max_results: int = 5) -> FunctionTool:
     return FunctionTool(
         scavio_amazon_search,
         description=(
-            "Search Amazon product listings. Returns product titles, "
-            "prices, ratings, ASINs, badges and delivery estimates. "
+            "Search Amazon product listings (1 credit). Returns product "
+            "titles, prices, ratings, ASINs, badges and delivery estimates. "
             "Results are unsorted and cannot be filtered."
         ),
     )
@@ -110,7 +110,8 @@ def create_amazon_product_tool() -> FunctionTool:
     return FunctionTool(
         scavio_amazon_product,
         description=(
-            "Fetch full details for a specific Amazon product by ASIN code."
+            "Fetch full details for a specific Amazon product by ASIN code (1 "
+            "credit)."
         ),
     )
 
@@ -152,6 +153,7 @@ def create_amazon_offers_tool(max_results: int = 20) -> FunctionTool:
         scavio_amazon_offers,
         description=(
             "List every seller offer for an Amazon ASIN: price, seller, "
-            "condition, shipping, and which offer holds the buy box."
+            "condition, shipping, and which offer holds the buy box (1 "
+            "credit)."
         ),
     )

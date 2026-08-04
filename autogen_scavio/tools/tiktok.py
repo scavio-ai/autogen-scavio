@@ -36,7 +36,10 @@ def create_tiktok_profile_tool() -> FunctionTool:
 
     return FunctionTool(
         scavio_tiktok_profile,
-        description="Look up a TikTok user profile by username or sec_user_id.",
+        description=(
+            "Look up a TikTok user profile by username or sec_user_id (1 "
+            "credit)."
+        ),
     )
 
 
@@ -77,7 +80,7 @@ def create_tiktok_user_posts_tool(max_results: int = 5) -> FunctionTool:
 
     return FunctionTool(
         scavio_tiktok_user_posts,
-        description="Fetch a TikTok user's posted videos.",
+        description="Fetch a TikTok user's posted videos (1 credit).",
     )
 
 
@@ -101,7 +104,7 @@ def create_tiktok_video_tool() -> FunctionTool:
 
     return FunctionTool(
         scavio_tiktok_video,
-        description="Fetch details for a single TikTok video.",
+        description="Fetch details for a single TikTok video (1 credit).",
     )
 
 
@@ -139,7 +142,7 @@ def create_tiktok_video_comments_tool(max_results: int = 10) -> FunctionTool:
 
     return FunctionTool(
         scavio_tiktok_video_comments,
-        description="Fetch comments on a TikTok video.",
+        description="Fetch comments on a TikTok video (1 credit).",
     )
 
 
@@ -180,7 +183,10 @@ def create_tiktok_comment_replies_tool(max_results: int = 10) -> FunctionTool:
 
     return FunctionTool(
         scavio_tiktok_comment_replies,
-        description="Fetch replies to a specific comment on a TikTok video.",
+        description=(
+            "Fetch replies to a specific comment on a TikTok video (1 "
+            "credit)."
+        ),
     )
 
 
@@ -224,7 +230,7 @@ def create_tiktok_search_videos_tool(max_results: int = 5) -> FunctionTool:
 
     return FunctionTool(
         scavio_tiktok_search_videos,
-        description="Search TikTok videos by keyword.",
+        description="Search TikTok videos by keyword (1 credit).",
     )
 
 
@@ -262,7 +268,7 @@ def create_tiktok_search_users_tool(max_results: int = 5) -> FunctionTool:
 
     return FunctionTool(
         scavio_tiktok_search_users,
-        description="Search TikTok users by keyword.",
+        description="Search TikTok users by keyword (1 credit).",
     )
 
 
@@ -295,7 +301,7 @@ def create_tiktok_hashtag_tool() -> FunctionTool:
 
     return FunctionTool(
         scavio_tiktok_hashtag,
-        description="Look up TikTok hashtag information.",
+        description="Look up TikTok hashtag information (1 credit).",
     )
 
 
@@ -333,7 +339,7 @@ def create_tiktok_hashtag_videos_tool(max_results: int = 5) -> FunctionTool:
 
     return FunctionTool(
         scavio_tiktok_hashtag_videos,
-        description="Fetch TikTok videos for a specific hashtag.",
+        description="Fetch TikTok videos for a specific hashtag (1 credit).",
     )
 
 
@@ -374,7 +380,7 @@ def create_tiktok_user_followers_tool(max_results: int = 10) -> FunctionTool:
 
     return FunctionTool(
         scavio_tiktok_user_followers,
-        description="Fetch a TikTok user's followers.",
+        description="Fetch a TikTok user's followers (1 credit).",
     )
 
 
@@ -415,5 +421,5 @@ def create_tiktok_user_followings_tool(max_results: int = 10) -> FunctionTool:
 
     return FunctionTool(
         scavio_tiktok_user_followings,
-        description="Fetch accounts a TikTok user is following.",
+        description="Fetch accounts a TikTok user is following (1 credit).",
     )

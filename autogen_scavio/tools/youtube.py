@@ -111,7 +111,7 @@ def create_youtube_video_tool() -> FunctionTool:
 
     return FunctionTool(
         scavio_youtube_video,
-        description="Fetch full details for a YouTube video by video ID.",
+        description="Fetch full details for a YouTube video by video ID (1 credit).",
     )
 
 
@@ -174,7 +174,7 @@ def create_youtube_comments_tool(max_results: int = 10) -> FunctionTool:
 
     return FunctionTool(
         scavio_youtube_comments,
-        description="Fetch comments on a YouTube video.",
+        description="Fetch comments on a YouTube video (1 credit).",
     )
 
 
@@ -235,7 +235,7 @@ def create_youtube_channel_tool() -> FunctionTool:
 
     return FunctionTool(
         scavio_youtube_channel,
-        description="Fetch information about a YouTube channel.",
+        description="Fetch information about a YouTube channel (1 credit).",
     )
 
 
@@ -271,7 +271,7 @@ def create_youtube_channel_videos_tool(max_results: int = 5) -> FunctionTool:
 
     return FunctionTool(
         scavio_youtube_channel_videos,
-        description="Fetch the videos posted by a YouTube channel.",
+        description="Fetch the videos posted by a YouTube channel (1 credit).",
     )
 
 
@@ -299,5 +299,317 @@ def create_youtube_streams_tool() -> FunctionTool:
         description=(
             "Fetch playable and downloadable stream URLs for a YouTube video "
             "(3 credits)."
+        ),
+    )
+
+
+def create_youtube_shorts_tool(max_results: int = 5) -> FunctionTool:
+    """Create a YouTube Shorts search tool with the given configuration."""
+
+    async def scavio_youtube_shorts(
+        query: str,
+        sort_by: str | None = None,
+        cursor: str | None = None,
+    ) -> str:
+        """Search YouTube Shorts.
+
+        Args:
+            query: The search query string.
+            sort_by: Sort order for results, one of "relevance", "date",
+                "view_count", "rating".
+            cursor: Pagination cursor from a previous response.
+
+        Returns:
+            JSON string with matching Shorts under data.results, plus
+            next_cursor and has_more. There are no type, duration,
+            upload_date or features filters on this endpoint.
+        """
+        client = get_async_client()
+
+        params: dict = {k: v for k, v in {
+            "query": query,
+            "sort_by": sort_by,
+            "cursor": cursor,
+        }.items() if v is not None}
+
+        raw = await client.youtube.shorts(**params)
+
+        truncate_list(raw, ["data", "results"], max_results)
+
+        return format_response(raw)
+
+    return FunctionTool(
+        scavio_youtube_shorts,
+        description=(
+            "Search YouTube Shorts (2 credits). Returns short-form videos "
+            "under data.results."
+        ),
+    )
+
+
+def create_youtube_suggestions_tool(max_results: int = 10) -> FunctionTool:
+    """Create a YouTube search suggestions tool with the given configuration."""
+
+    async def scavio_youtube_suggestions(
+        query: str,
+        language: str | None = None,
+        region: str | None = None,
+    ) -> str:
+        """Fetch YouTube autocomplete suggestions for a query.
+
+        Args:
+            query: The partial query to autocomplete.
+            language: Language code, e.g. "en".
+            region: Region code, e.g. "US".
+
+        Returns:
+            JSON string with data.suggestions, a list of strings, plus
+            total_count.
+        """
+        client = get_async_client()
+
+        params: dict = {k: v for k, v in {
+            "query": query,
+            "language": language,
+            "region": region,
+        }.items() if v is not None}
+
+        raw = await client.youtube.suggestions(**params)
+
+        truncate_list(raw, ["data", "suggestions"], max_results)
+
+        return format_response(raw)
+
+    return FunctionTool(
+        scavio_youtube_suggestions,
+        description=(
+            "Fetch YouTube autocomplete suggestions for a query (1 credit)."
+        ),
+    )
+
+
+def create_youtube_comment_replies_tool(max_results: int = 10) -> FunctionTool:
+    """Create a YouTube comment replies tool with the given configuration."""
+
+    async def scavio_youtube_comment_replies(
+        video_id: str,
+        reply_cursor: str,
+        cursor: str | None = None,
+    ) -> str:
+        """Fetch replies to a specific comment on a YouTube video.
+
+        Args:
+            video_id: The YouTube video ID.
+            reply_cursor: The reply_cursor of a comment from the comments
+                tool. Required: this endpoint cannot be called from a video
+                ID alone.
+            cursor: Pagination cursor for page 2 onwards. Wins over
+                reply_cursor when both are set.
+
+        Returns:
+            JSON string with data.replies, plus next_cursor and has_more.
+        """
+        client = get_async_client()
+
+        params: dict = {k: v for k, v in {
+            "video_id": video_id,
+            "reply_cursor": reply_cursor,
+            "cursor": cursor,
+        }.items() if v is not None}
+
+        raw = await client.youtube.comment_replies(**params)
+
+        truncate_list(raw, ["data", "replies"], max_results)
+
+        return format_response(raw)
+
+    return FunctionTool(
+        scavio_youtube_comment_replies,
+        description=(
+            "Fetch replies to a YouTube comment (1 credit). Needs the "
+            "reply_cursor of a comment from the comments tool."
+        ),
+    )
+
+
+def create_youtube_related_tool(max_results: int = 5) -> FunctionTool:
+    """Create a YouTube related videos tool with the given configuration."""
+
+    async def scavio_youtube_related(
+        video_id: str,
+        cursor: str | None = None,
+    ) -> str:
+        """Fetch videos related to a YouTube video.
+
+        Args:
+            video_id: The YouTube video ID.
+            cursor: Pagination cursor from a previous response.
+
+        Returns:
+            JSON string with related videos under data.results, plus
+            total_count. This endpoint accepts a cursor but returns no
+            next_cursor or has_more.
+        """
+        client = get_async_client()
+
+        params: dict = {k: v for k, v in {
+            "video_id": video_id,
+            "cursor": cursor,
+        }.items() if v is not None}
+
+        raw = await client.youtube.related(**params)
+
+        truncate_list(raw, ["data", "results"], max_results)
+
+        return format_response(raw)
+
+    return FunctionTool(
+        scavio_youtube_related,
+        description="Fetch videos related to a YouTube video (1 credit).",
+    )
+
+
+def create_youtube_channel_search_tool(max_results: int = 5) -> FunctionTool:
+    """Create a YouTube channel search tool with the given configuration."""
+
+    async def scavio_youtube_channel_search(
+        query: str,
+        cursor: str | None = None,
+    ) -> str:
+        """Search YouTube for channels.
+
+        Args:
+            query: The channel search query.
+            cursor: Pagination cursor from a previous response.
+
+        Returns:
+            JSON string with matching channels under data.results with
+            channel_id, name, handle, subscriber_count and verified, plus
+            next_cursor, has_more and total_count.
+        """
+        client = get_async_client()
+
+        params: dict = {k: v for k, v in {
+            "query": query,
+            "cursor": cursor,
+        }.items() if v is not None}
+
+        raw = await client.youtube.channel_search(**params)
+
+        truncate_list(raw, ["data", "results"], max_results)
+
+        return format_response(raw)
+
+    return FunctionTool(
+        scavio_youtube_channel_search,
+        description=(
+            "Search YouTube for channels (1 credit). Returns channel ids, "
+            "handles and subscriber counts."
+        ),
+    )
+
+
+def create_youtube_channel_shorts_tool(max_results: int = 5) -> FunctionTool:
+    """Create a YouTube channel shorts tool with the given configuration."""
+
+    async def scavio_youtube_channel_shorts(
+        channel_id: str,
+        cursor: str | None = None,
+    ) -> str:
+        """Fetch the Shorts posted by a YouTube channel.
+
+        Args:
+            channel_id: The YouTube channel ID, @handle, or channel URL.
+            cursor: Pagination cursor from a previous response.
+
+        Returns:
+            JSON string with the channel's Shorts under data.results
+            (video_id, title, url, thumbnail), plus next_cursor, has_more and
+            total_count. View counts are deliberately omitted: upstream
+            reports promo text there for Shorts.
+        """
+        client = get_async_client()
+
+        params: dict = {k: v for k, v in {
+            "channel_id": channel_id,
+            "cursor": cursor,
+        }.items() if v is not None}
+
+        raw = await client.youtube.channel_shorts(**params)
+
+        truncate_list(raw, ["data", "results"], max_results)
+
+        return format_response(raw)
+
+    return FunctionTool(
+        scavio_youtube_channel_shorts,
+        description="Fetch the Shorts posted by a YouTube channel (1 credit).",
+    )
+
+
+def create_youtube_channel_community_tool(max_results: int = 5) -> FunctionTool:
+    """Create a YouTube channel community tool with the given configuration."""
+
+    async def scavio_youtube_channel_community(
+        channel_id: str,
+        cursor: str | None = None,
+    ) -> str:
+        """Fetch a YouTube channel's community posts.
+
+        Args:
+            channel_id: The YouTube channel ID, @handle, or channel URL.
+            cursor: Pagination cursor from a previous response.
+
+        Returns:
+            JSON string with community posts under data.posts (text,
+            vote_count, comment_count, images), plus next_cursor and has_more.
+            This is the only YouTube endpoint whose list key is posts.
+        """
+        client = get_async_client()
+
+        params: dict = {k: v for k, v in {
+            "channel_id": channel_id,
+            "cursor": cursor,
+        }.items() if v is not None}
+
+        raw = await client.youtube.channel_community(**params)
+
+        truncate_list(raw, ["data", "posts"], max_results)
+
+        return format_response(raw)
+
+    return FunctionTool(
+        scavio_youtube_channel_community,
+        description=(
+            "Fetch a YouTube channel's community posts (1 credit). The list "
+            "key is data.posts, not data.results."
+        ),
+    )
+
+
+def create_youtube_channel_resolve_tool() -> FunctionTool:
+    """Create a YouTube channel resolve tool."""
+
+    async def scavio_youtube_channel_resolve(channel: str) -> str:
+        """Resolve a YouTube @handle or channel URL to a channel ID.
+
+        Args:
+            channel: A channel @handle, bare name, or channel URL, e.g.
+                "@MrBeast". The field is channel, not channel_id.
+
+        Returns:
+            JSON string with data.channel_id and data.channel_url.
+        """
+        client = get_async_client()
+
+        raw = await client.youtube.channel_resolve(channel=channel)
+
+        return format_response(raw)
+
+    return FunctionTool(
+        scavio_youtube_channel_resolve,
+        description=(
+            "Resolve a YouTube @handle or channel URL to a channel ID "
+            "(1 credit)."
         ),
     )

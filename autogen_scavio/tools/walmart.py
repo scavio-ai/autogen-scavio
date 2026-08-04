@@ -71,8 +71,8 @@ def create_walmart_search_tool(max_results: int = 5) -> FunctionTool:
     return FunctionTool(
         scavio_walmart_search,
         description=(
-            "Search Walmart product listings. Returns product names, "
-            "prices, ratings, and fulfillment options."
+            "Search Walmart product listings (1 credit). Returns product "
+            "names, prices, ratings, and fulfillment options."
         ),
     )
 
@@ -117,5 +117,8 @@ def create_walmart_product_tool() -> FunctionTool:
 
     return FunctionTool(
         scavio_walmart_product,
-        description="Fetch full details for a specific Walmart product by product ID.",
+        description=(
+            "Fetch full details for a specific Walmart product by product ID "
+            "(1 credit)."
+        ),
     )

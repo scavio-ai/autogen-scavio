@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "autogen-scavio"
-version = "0.4.0"
-description = "AutoGen integration for Scavio Search API -- real-time Google, Amazon, Walmart, YouTube, Reddit, TikTok, TikTok Shop, and Instagram search tools for AI agents"
+version = "0.6.0"
+description = "AutoGen integration for Scavio Search API -- real-time Google, Amazon, Walmart, YouTube, Reddit, TikTok, TikTok Shop, Instagram, X, and LinkedIn search tools for AI agents"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
@@ -24,6 +24,9 @@ keywords = [
     "reddit-search",
     "tiktok-search",
     "instagram-search",
+    "x-search",
+    "twitter-search",
+    "linkedin-search",
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -34,7 +37,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "scavio>=0.12.0",
+    "scavio>=0.14.0",
     "autogen-core>=0.4.0",
 ]
 

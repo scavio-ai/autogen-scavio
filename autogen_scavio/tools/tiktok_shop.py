@@ -83,14 +83,15 @@ def create_tiktok_shop_search_tool(max_results: int = 10) -> FunctionTool:
     return FunctionTool(
         scavio_tiktok_shop_search,
         description=(
-            "Search TikTok Shop products by keyword (US catalog only). Returns "
-            "up to 30 products per page with exact prices, ratings, sold counts "
-            "and shop details. Paginate with data.next_cursor and dedupe by "
-            "product_id across pages. Product ids returned here are not "
-            "guaranteed to resolve on scavio_tiktok_shop_product: only about "
-            "44% do, so treat this as a listing source, not the first leg of a "
-            "search-then-detail pipeline. This tool returns exact prices; the "
-            "product detail tool does not."
+            "Search TikTok Shop products by keyword (US catalog only) (1 "
+            "credit). Returns up to 30 products per page with exact prices, "
+            "ratings, sold counts and shop details. Paginate with "
+            "data.next_cursor and dedupe by product_id across pages. Product "
+            "ids returned here are not guaranteed to resolve on "
+            "scavio_tiktok_shop_product: only about 44% do, so treat this as "
+            "a listing source, not the first leg of a search-then-detail "
+            "pipeline. This tool returns exact prices; the product detail "
+            "tool does not."
         ),
     )
 
@@ -131,10 +132,11 @@ def create_tiktok_shop_search_suggestions_tool() -> FunctionTool:
         scavio_tiktok_shop_search_suggestions,
         description=(
             "Keyword autocomplete and expansion for a partial TikTok Shop "
-            "query, across 8 marketplace regions. Returns a plain list of "
-            "suggestion strings with no search volume or score. Suggestions are "
-            "not guaranteed prefix matches: a misspelling returns typo "
-            "corrections, and results can include brand and shop names."
+            "query, across 8 marketplace regions (1 credit). Returns a plain "
+            "list of suggestion strings with no search volume or score. "
+            "Suggestions are not guaranteed prefix matches: a misspelling "
+            "returns typo corrections, and results can include brand and shop "
+            "names."
         ),
     )
 
@@ -189,9 +191,9 @@ def create_tiktok_shop_product_tool() -> FunctionTool:
     return FunctionTool(
         scavio_tiktok_shop_product,
         description=(
-            "Fetch full TikTok Shop product detail: description, images, "
-            "variants with stock, shipping, shop profile, category path and top "
-            "reviews. " + PRODUCT_PRICE_NOTE + " " + PRODUCT_COVERAGE_NOTE
+            "Fetch full TikTok Shop product detail (1 credit): description, "
+            "images, variants with stock, shipping, shop profile, category "
+            "path and top reviews. " + PRODUCT_PRICE_NOTE + " " + PRODUCT_COVERAGE_NOTE
             + " A not-found answer comes back as data null with not_found true; "
             "treat it as a normal result and move on."
         ),
@@ -257,12 +259,12 @@ def create_tiktok_shop_product_reviews_tool(max_results: int = 20) -> FunctionTo
         scavio_tiktok_shop_product_reviews,
         description=(
             "Fetch paginated TikTok Shop product reviews with text, images, "
-            "star histogram and verified-purchase flags, up to 200 per call. "
-            "data.total_reviews drifts between calls and must not be used to "
-            "compute a page count; page with data.has_more instead. "
-            "sort='recent' is fresher but far more text-sparse than the default "
-            "'relevant'. Reviewer names are pre-masked by the platform and "
-            "image URLs are signed and expire."
+            "star histogram and verified-purchase flags, up to 200 per call "
+            "(1 credit). data.total_reviews drifts between calls and must not "
+            "be used to compute a page count; page with data.has_more "
+            "instead. sort='recent' is fresher but far more text-sparse than "
+            "the default 'relevant'. Reviewer names are pre-masked by the "
+            "platform and image URLs are signed and expire."
         ),
     )
 
@@ -292,10 +294,11 @@ def create_tiktok_shop_categories_tool() -> FunctionTool:
         scavio_tiktok_shop_categories,
         description=(
             "Fetch the global TikTok Shop category tree: 28 top-level "
-            "categories, 240 nodes, two levels deep. Category ids are identical "
-            "in every region and names are always English, so this tool takes "
-            "no parameters. Feed a category_id from here into "
-            "scavio_tiktok_shop_category_products. The tree is stable; cache it."
+            "categories, 240 nodes, two levels deep (1 credit). Category ids "
+            "are identical in every region and names are always English, so "
+            "this tool takes no parameters. Feed a category_id from here into "
+            "scavio_tiktok_shop_category_products. The tree is stable; cache "
+            "it."
         ),
     )
 
@@ -354,12 +357,12 @@ def create_tiktok_shop_category_products_tool(max_results: int = 10) -> Function
         scavio_tiktok_shop_category_products,
         description=(
             "List TikTok Shop products under a category id from "
-            "scavio_tiktok_shop_categories, with exact prices. US and GB only. "
-            "Page size is inconsistent upstream (15 to 20 per page), so "
-            "paginate with data.next_cursor and never assume a fixed size. "
-            "Listings are shallow: has_more turning false after a few pages is "
-            "the end of the listing, not an error. This tool returns exact "
-            "prices; the product detail tool does not."
+            "scavio_tiktok_shop_categories, with exact prices (1 credit). US "
+            "and GB only. Page size is inconsistent upstream (15 to 20 per "
+            "page), so paginate with data.next_cursor and never assume a "
+            "fixed size. Listings are shallow: has_more turning false after a "
+            "few pages is the end of the listing, not an error. This tool "
+            "returns exact prices; the product detail tool does not."
         ),
     )
 
@@ -415,10 +418,11 @@ def create_tiktok_shop_shop_products_tool(max_results: int = 10) -> FunctionTool
         scavio_tiktok_shop_shop_products,
         description=(
             "Fetch a TikTok Shop seller's product catalog, 30 per page, with "
-            "exact prices. Paginate with data.next_cursor. Shop follower count, "
-            "location and shop-level rating are not available here -- use "
-            "scavio_tiktok_shop_product for the full shop profile. This tool "
-            "returns exact prices; the product detail tool does not."
+            "exact prices (1 credit). Paginate with data.next_cursor. Shop "
+            "follower count, location and shop-level rating are not available "
+            "here -- use scavio_tiktok_shop_product for the full shop "
+            "profile. This tool returns exact prices; the product detail tool "
+            "does not."
         ),
     )
 
@@ -464,11 +468,11 @@ def create_tiktok_shop_resolve_tool() -> FunctionTool:
         scavio_tiktok_shop_resolve,
         description=(
             "Resolve any TikTok Shop URL or share link to a product_id or "
-            "shop_id, ready to pass to the other TikTok Shop tools. Accepts "
-            "shop.tiktok.com product and store pages, tiktok.com/view links, "
-            "affiliate share links and vt.tiktok.com short links. Returns the "
-            "id, a canonical https URL and whether it was read from the URL "
-            "pattern or by following the share link. A dead link comes back as "
-            "not_found."
+            "shop_id, ready to pass to the other TikTok Shop tools (1 "
+            "credit). Accepts shop.tiktok.com product and store pages, "
+            "tiktok.com/view links, affiliate share links and vt.tiktok.com "
+            "short links. Returns the id, a canonical https URL and whether "
+            "it was read from the URL pattern or by following the share link. "
+            "A dead link comes back as not_found."
         ),
     )
