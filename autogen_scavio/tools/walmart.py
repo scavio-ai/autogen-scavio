@@ -28,13 +28,16 @@ def create_walmart_search_tool(max_results: int = 5) -> FunctionTool:
         Args:
             query: The search query string.
             domain: Walmart domain to search (e.g. "com", "ca").
-            device: Device type for results (e.g. "desktop", "mobile").
-            sort_by: Sort order for results (e.g. "best_match", "price_low", "price_high").
-            start_page: Page number to start results from.
+            device: Device type for results, one of "desktop", "mobile", "tablet".
+            sort_by: Sort order for results, one of "best_match", "price_low",
+                "price_high", "best_seller".
+            start_page: Page number to start results from (1-based).
             min_price: Minimum price filter.
             max_price: Maximum price filter.
-            fulfillment_speed: Filter by fulfillment speed (e.g. "nextday", "twoday").
-            fulfillment_type: Filter by fulfillment type (e.g. "pickup", "shipping").
+            fulfillment_speed: Filter by fulfillment speed, one of "today",
+                "tomorrow", "2_days", "anytime".
+            fulfillment_type: Filter by fulfillment type. The only accepted
+                value is "in_store".
             delivery_zip: ZIP code for delivery availability filtering.
             store_id: Walmart store ID for local inventory filtering.
 
@@ -89,7 +92,7 @@ def create_walmart_product_tool() -> FunctionTool:
         Args:
             product_id: The Walmart product ID to retrieve details for.
             domain: Walmart domain (e.g. "com", "ca").
-            device: Device type (e.g. "desktop", "mobile").
+            device: Device type, one of "desktop", "mobile", "tablet".
             delivery_zip: ZIP code for delivery availability info.
             store_id: Walmart store ID for local availability info.
 

@@ -29,16 +29,18 @@ def create_youtube_search_tool(
         subtitles: bool | None = None,
         creative_commons: bool | None = None,
         live: bool | None = None,
-        location: bool | None = None,
     ) -> str:
         """Search YouTube videos using the Scavio API.
 
         Args:
             query: The search query string.
-            upload_date: Filter by upload date (e.g. "hour", "today", "week", "month", "year").
-            video_type: Filter by video type (e.g. "video", "channel", "playlist", "movie").
-            duration: Filter by duration (e.g. "short", "medium", "long").
-            sort_by: Sort order for results (e.g. "relevance", "date", "views", "rating").
+            upload_date: Filter by upload date, one of "last_hour", "today",
+                "this_week", "this_month", "this_year".
+            video_type: Filter by video type, one of "video", "channel",
+                "playlist", "movie".
+            duration: Filter by duration, one of "short", "medium", "long".
+            sort_by: Sort order for results, one of "relevance", "date",
+                "view_count", "rating".
             features: Feature filters (e.g. "hd", "4k", "subtitles", "creative_commons",
                 "live", "360", "3d", "hdr", "vr180").
             cursor: Pagination cursor from a previous response.
@@ -46,7 +48,6 @@ def create_youtube_search_tool(
             subtitles: Filter for videos with subtitles.
             creative_commons: Filter for Creative Commons licensed videos.
             live: Filter for live videos.
-            location: Filter for videos with location data.
 
         Returns:
             JSON string with YouTube search results including video titles,
@@ -66,7 +67,6 @@ def create_youtube_search_tool(
             "subtitles": subtitles,
             "creative_commons": creative_commons,
             "live": live,
-            "location": location,
             "4k": fourk,
             "hdr": hdr,
             "360": three_sixty,
@@ -84,8 +84,8 @@ def create_youtube_search_tool(
     return FunctionTool(
         scavio_youtube_search,
         description=(
-            "Search YouTube videos. Returns video titles, channels, "
-            "view counts, durations, and video IDs."
+            "Search YouTube videos (2 credits). Returns video titles, "
+            "channels, view counts, durations, and video IDs."
         ),
     )
 
@@ -210,7 +210,7 @@ def create_youtube_transcript_tool() -> FunctionTool:
 
     return FunctionTool(
         scavio_youtube_transcript,
-        description="Fetch the transcript for a YouTube video.",
+        description="Fetch the transcript for a YouTube video (8 credits).",
     )
 
 
@@ -296,5 +296,8 @@ def create_youtube_streams_tool() -> FunctionTool:
 
     return FunctionTool(
         scavio_youtube_streams,
-        description="Fetch playable and downloadable stream URLs for a YouTube video.",
+        description=(
+            "Fetch playable and downloadable stream URLs for a YouTube video "
+            "(3 credits)."
+        ),
     )

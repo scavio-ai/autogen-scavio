@@ -47,7 +47,58 @@ class TestWebSearchTool:
             result = await tool.run_json({"query": "test"}, None)
             parsed = json.loads(result)
             assert "knowledge_graph" not in parsed
-            assert "questions" not in parsed
+            # v2 names the block related_questions, not questions.
+            assert "related_questions" not in parsed
+
+    @patch("autogen_scavio._client._async_client")
+    @patch("autogen_scavio._client._configured_api_key", "test-key")
+    async def test_keeps_ai_overview_by_default(self, _mock_client):
+        """The AI Overview ships by default and is not resolved twice."""
+        mock_client = MagicMock()
+        mock_client.google.search = AsyncMock(return_value=mock_search_response())
+
+        with patch("autogen_scavio._client._async_client", mock_client):
+            tool = create_web_search_tool()
+            result = await tool.run_json({"query": "test"}, None)
+            parsed = json.loads(result)
+            assert "ai_overview" in parsed
+            assert "resolve_ai_overview" not in (
+                mock_client.google.search.call_args.kwargs
+            )
+
+    @patch("autogen_scavio._client._async_client")
+    @patch("autogen_scavio._client._configured_api_key", "test-key")
+    async def test_opting_out_of_ai_overview_skips_the_extra_call(self, _mock_client):
+        """Dropping the block also tells the API not to resolve it."""
+        mock_client = MagicMock()
+        mock_client.google.search = AsyncMock(return_value=mock_search_response())
+
+        with patch("autogen_scavio._client._async_client", mock_client):
+            tool = create_web_search_tool(include_ai_overview=False)
+            result = await tool.run_json({"query": "test"}, None)
+            parsed = json.loads(result)
+            assert "ai_overview" not in parsed
+            call_kwargs = mock_client.google.search.call_args.kwargs
+            assert call_kwargs["resolve_ai_overview"] is False
+
+    @patch("autogen_scavio._client._async_client")
+    @patch("autogen_scavio._client._configured_api_key", "test-key")
+    async def test_related_searches_are_optional(self, _mock_client):
+        """include_related gates the v2 related_searches block."""
+        mock_client = MagicMock()
+        # A fresh dict per call: the tool pops sections in place.
+        mock_client.google.search = AsyncMock(
+            side_effect=lambda **_: mock_search_response()
+        )
+
+        with patch("autogen_scavio._client._async_client", mock_client):
+            result = await create_web_search_tool().run_json({"query": "t"}, None)
+            assert "related_searches" not in json.loads(result)
+
+            result = await create_web_search_tool(include_related=True).run_json(
+                {"query": "t"}, None
+            )
+            assert "related_searches" in json.loads(result)
 
     @patch("autogen_scavio._client._async_client")
     @patch("autogen_scavio._client._configured_api_key", "test-key")

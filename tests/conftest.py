@@ -4,8 +4,9 @@ from __future__ import annotations
 
 
 def mock_search_response(num_results: int = 10) -> dict:
+    """The flat /api/v2/google body: organic_results with link/snippet."""
     return {
-        "query": "test query",
+        "search_parameters": {"q": "test query"},
         "credits_used": 1,
         "credits_remaining": 999,
         "organic_results": [
@@ -18,7 +19,9 @@ def mock_search_response(num_results: int = 10) -> dict:
             for i in range(1, num_results + 1)
         ],
         "knowledge_graph": {"title": "Test", "subtitle": "A test entity"},
-        "questions": [{"question": "What is test?", "answer": "A test."}],
+        "related_questions": [{"question": "What is test?", "answer": "A test."}],
+        "related_searches": [{"query": "test 2"}],
+        "ai_overview": {"text_blocks": [{"snippet": "An overview."}]},
     }
 
 
@@ -56,7 +59,7 @@ def mock_amazon_product_response() -> dict:
 
 def mock_youtube_search_response(num_results: int = 10) -> dict:
     return {
-        "credits_used": 1,
+        "credits_used": 2,
         "data": {
             "results": [
                 {
@@ -214,34 +217,45 @@ def mock_walmart_product_response() -> dict:
 
 
 def mock_reddit_search_response(num_posts: int = 10) -> dict:
+    """/reddit/search returns data.results, not data.posts."""
     return {
         "credits_used": 1,
         "data": {
-            "posts": [
+            "results": [
                 {
-                    "id": f"post_{i}",
+                    "post_id": f"t3_post_{i}",
                     "title": f"Post {i}",
                     "subreddit": "test",
                     "author": f"user_{i}",
+                    "score": 10 * i,
                 }
                 for i in range(1, num_posts + 1)
             ],
+            "next_cursor": "next",
+            "has_more": True,
         },
     }
 
 
 def mock_reddit_post_response() -> dict:
+    """/reddit/post returns a flat post object and no comments."""
     return {
         "credits_used": 1,
         "data": {
-            "post": {
-                "id": "post_1",
-                "title": "Test Post",
-                "body": "Test body",
-            },
-            "comments": [
-                {"id": "c1", "body": "Comment 1"},
-            ],
+            "post_id": "t3_post_1",
+            "title": "Test Post",
+            "text": "Test body",
+            "url": "https://reddit.com/r/test/comments/post_1/test",
+            "subreddit": "test",
+            "author": "user_1",
+            "score": 42,
+            "upvote_ratio": 0.97,
+            "num_comments": 3,
+            "created_at": "2026-08-01T00:00:00Z",
+            "is_nsfw": False,
+            "is_video": False,
+            "thumbnail": None,
+            "media": [],
         },
     }
 

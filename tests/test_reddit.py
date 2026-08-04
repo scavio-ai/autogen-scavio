@@ -19,8 +19,8 @@ class TestRedditSearchTool:
 
     @patch("autogen_scavio._client._async_client")
     @patch("autogen_scavio._client._configured_api_key", "test-key")
-    async def test_truncates_posts(self, _mock_client):
-        """Test that posts are truncated to max_results."""
+    async def test_truncates_results(self, _mock_client):
+        """Test that data.results is truncated to max_results."""
         mock_client = MagicMock()
         mock_client.reddit.search = AsyncMock(
             return_value=mock_reddit_search_response(10)
@@ -30,7 +30,27 @@ class TestRedditSearchTool:
             tool = create_reddit_search_tool(max_results=3)
             result = await tool.run_json({"query": "python"}, None)
             parsed = json.loads(result)
-            assert len(parsed["data"]["posts"]) == 3
+            assert len(parsed["data"]["results"]) == 3
+
+    @patch("autogen_scavio._client._async_client")
+    @patch("autogen_scavio._client._configured_api_key", "test-key")
+    async def test_sends_cursor_and_no_phantom_filters(self, _mock_client):
+        """Test that only query and cursor reach the SDK."""
+        mock_client = MagicMock()
+        mock_client.reddit.search = AsyncMock(
+            return_value=mock_reddit_search_response()
+        )
+
+        with patch("autogen_scavio._client._async_client", mock_client):
+            tool = create_reddit_search_tool()
+            await tool.run_json({"query": "python", "cursor": "abc"}, None)
+            call_kwargs = mock_client.reddit.search.call_args.kwargs
+            assert call_kwargs == {"query": "python", "cursor": "abc"}
+
+    def test_has_no_type_or_sort_params(self):
+        """The endpoint strips type/sort, so the tool must not offer them."""
+        schema = create_reddit_search_tool().schema["parameters"]["properties"]
+        assert set(schema) == {"query", "cursor"}
 
 
 class TestRedditPostTool:
@@ -43,8 +63,8 @@ class TestRedditPostTool:
 
     @patch("autogen_scavio._client._async_client")
     @patch("autogen_scavio._client._configured_api_key", "test-key")
-    async def test_returns_post_data(self, _mock_client):
-        """Test that post data is returned."""
+    async def test_returns_flat_post_data(self, _mock_client):
+        """Test that the flat post object is returned under data."""
         mock_client = MagicMock()
         mock_client.reddit.post = AsyncMock(
             return_value=mock_reddit_post_response()
@@ -57,4 +77,6 @@ class TestRedditPostTool:
                 None,
             )
             parsed = json.loads(result)
-            assert parsed["data"]["post"]["id"] == "post_1"
+            assert parsed["data"]["post_id"] == "t3_post_1"
+            assert "post" not in parsed["data"]
+            assert "comments" not in parsed["data"]

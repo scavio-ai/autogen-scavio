@@ -1,6 +1,6 @@
 # autogen-scavio
 
-AutoGen integration for the [Scavio Search API](https://scavio.dev?utm_source=autogen_integration), a [search API for AI agents](https://scavio.dev/search-api-for-ai-agents). Provides 47 search tools across Google, Amazon, Walmart, YouTube, Reddit, TikTok, TikTok Shop, and Instagram for use with AutoGen AI agents.
+AutoGen integration for the [Scavio Search API](https://scavio.dev?utm_source=autogen_integration), a [search API for AI agents](https://scavio.dev/search-api-for-ai-agents). Provides 46 search tools across Google, Amazon, Walmart, YouTube, Reddit, TikTok, TikTok Shop, and Instagram for use with AutoGen AI agents. Scavio also covers X and LinkedIn; those are not wrapped as AutoGen tools yet, call them through the [Python SDK](https://pypi.org/project/scavio/).
 
 ## Installation
 
@@ -76,12 +76,17 @@ amazon_tool = create_amazon_search_tool(max_results=5)
 | Amazon | `scavio_amazon_search` | Product search across 22 marketplaces |
 | Amazon | `scavio_amazon_product` | Product details by ASIN |
 | Amazon | `scavio_amazon_offers` | Every seller offer for an ASIN, including the buy-box winner |
-| YouTube | `scavio_youtube_search` | Video search with filters |
-| YouTube | `scavio_youtube_metadata` | Video metadata by ID |
+| YouTube | `scavio_youtube_search` | Video search with filters (2 credits) |
+| YouTube | `scavio_youtube_video` | Full video details by ID or watch URL |
+| YouTube | `scavio_youtube_comments` | Top-level comments on a video |
+| YouTube | `scavio_youtube_transcript` | Transcript as plain text or SRT (8 credits) |
+| YouTube | `scavio_youtube_channel` | Channel profile by ID, @handle, or URL |
+| YouTube | `scavio_youtube_channel_videos` | A channel's uploaded videos |
+| YouTube | `scavio_youtube_streams` | Playable stream URLs for a video (3 credits) |
 | Walmart | `scavio_walmart_search` | Product search with price/fulfillment filters |
 | Walmart | `scavio_walmart_product` | Product details by ID |
-| Reddit | `scavio_reddit_search` | Post and comment search |
-| Reddit | `scavio_reddit_post` | Post metadata and comments by URL |
+| Reddit | `scavio_reddit_search` | Post search (query and cursor only) |
+| Reddit | `scavio_reddit_post` | Post metadata by URL, without comments |
 | TikTok | `scavio_tiktok_profile` | User profile lookup |
 | TikTok | `scavio_tiktok_user_posts` | User's posted videos |
 | TikTok | `scavio_tiktok_video` | Video details |
@@ -113,6 +118,15 @@ amazon_tool = create_amazon_search_tool(max_results=5)
 | Instagram | `scavio_instagram_search_hashtags` | Hashtag search by keyword |
 | Instagram | `scavio_instagram_user_followers` | User's followers |
 | Instagram | `scavio_instagram_user_followings` | User's followings |
+
+Most endpoints cost 1 credit. The exceptions are noted in the table above plus
+Instagram, which is priced per endpoint: 10 credits by default, 8 for
+`scavio_instagram_post` and `scavio_instagram_comment_replies`, and 2 for
+`scavio_instagram_user_posts`.
+
+`create_youtube_metadata_tool` is still exported but is a deprecated alias of
+`scavio_youtube_video` (same endpoint, same response), so it is no longer part
+of the default tool set. Use the video tool.
 
 ### TikTok Shop caveats
 
@@ -152,6 +166,8 @@ tools = create_scavio_tools(api_key="sk_live_...", max_results=10)
 - [Google Search API](https://scavio.dev/google-search-api) — SERP results, news, images, maps, and knowledge graph
 - [Amazon Product API](https://scavio.dev/amazon-product-api) and [Walmart Product API](https://scavio.dev/walmart-product-api) — product search and details
 - [YouTube API](https://scavio.dev/youtube-transcript-api), [TikTok API](https://scavio.dev/tiktok-api), and [Instagram API](https://scavio.dev/instagram-api) — video and social media data
+- TikTok Shop — product detail, reviews, categories, and seller catalogs
 - [Reddit API](https://scavio.dev/reddit-api) — posts and threaded comments
+- X (formerly Twitter) and LinkedIn — profiles, posts, and search
 
 Get a free [API key](https://dashboard.scavio.dev) and explore the [documentation](https://scavio.dev/docs/introduction). You can also [compare Scavio vs alternatives](https://scavio.dev/compare) on coverage and pricing.

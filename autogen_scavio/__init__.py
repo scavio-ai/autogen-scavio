@@ -73,7 +73,9 @@ _PROVIDER_MAP: dict[str, list] = {
     "youtube": [
         create_youtube_search_tool,
         create_youtube_video_tool,
-        create_youtube_metadata_tool,
+        # create_youtube_metadata_tool is a deprecated alias of the video tool
+        # (same endpoint, same response). It stays importable for existing
+        # callers but is not loaded by default.
         create_youtube_comments_tool,
         create_youtube_transcript_tool,
         create_youtube_channel_tool,
