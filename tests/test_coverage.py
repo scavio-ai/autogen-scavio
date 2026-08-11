@@ -10,6 +10,9 @@ from __future__ import annotations
 import autogen_scavio
 
 # Live billable endpoints per platform, from the Scavio API inventory.
+# extract = the one CORE endpoint: not a platform, reads any URL. It is keyed
+#           "extract" here and reached as a top-level SDK method, never a
+#           namespace - scavio.extract(...), never scavio.extract.extract().
 # google  = the 14 v2 endpoints; v1 was retired 2026-08-04 and answers 410.
 # youtube = 15 live; /youtube/metadata is a deprecated alias of /youtube/video
 #           and is deliberately not registered.
@@ -17,20 +20,49 @@ import autogen_scavio
 # reddit  = all 12 endpoints (search, suggestions, post, comments, replies,
 #           subreddit, subreddit feed, user, user posts, user comments,
 #           popular, trending).
+# walmart = 7 since 0.7.0; it shipped with search and product only.
+# The 21 entries below walmart landed whole in 0.7.0 with the 93-endpoint
+# fanout batch, which is also where walmart grew from 2 to 7.
 EXPECTED_TOOL_COUNTS = {
+    "extract": 1,
     "google": 14,
     "amazon": 3,
     "youtube": 15,
-    "walmart": 2,
+    "walmart": 7,
     "reddit": 12,
     "tiktok": 11,
     "tiktok_shop": 8,
     "instagram": 12,
     "x": 11,
     "linkedin": 9,
+    "threads": 6,
+    "kuaishou": 14,
+    "ebay": 3,
+    "target": 4,
+    "home_depot": 3,
+    "zillow": 3,
+    "booking": 3,
+    "tripadvisor": 4,
+    "indeed": 4,
+    "airbnb": 3,
+    "glassdoor": 4,
+    "yelp": 3,
+    "app_store": 3,
+    "google_play": 3,
+    "sec": 6,
+    "redfin": 3,
+    "companies_house": 4,
+    "g2": 3,
+    "capterra": 3,
+    "google_ads": 3,
+    "meta_ads": 3,
 }
 
 TOTAL_TOOLS = sum(EXPECTED_TOOL_COUNTS.values())
+
+# The fanout batch: 92 platform endpoints across 22 platforms, plus extract.
+# walmart contributes all 7 of its endpoints to that 92, of which 5 are new.
+FANOUT_TOOL_COUNT = 93
 
 
 def test_provider_map_matches_expected_counts():
@@ -42,7 +74,14 @@ def test_provider_map_matches_expected_counts():
 
 def test_default_tool_set_size():
     tools = autogen_scavio.create_scavio_tools(api_key="test-key")
-    assert len(tools) == TOTAL_TOOLS == 97
+    assert len(tools) == TOTAL_TOOLS == 188
+
+
+def test_extract_leads_the_default_tool_set():
+    """It is the only tool that works on a URL no platform endpoint covers."""
+    tools = autogen_scavio.create_scavio_tools(api_key="test-key")
+    assert tools[0].name == "scavio_extract"
+    assert list(autogen_scavio._PROVIDER_MAP)[0] == "extract"
 
 
 def test_tool_names_are_unique():
@@ -89,6 +128,20 @@ def test_every_tool_description_states_its_credit_cost():
         "scavio_x_search": "1 credit",
         "scavio_google_trending": "1 credit",
         "scavio_reddit_search": "1 credit",
+        # The fanout batch. g2 is the dearest flat platform at 5, home_depot /
+        # tripadvisor / indeed / yelp / google_play / capterra are 2, the rest 1.
+        "scavio_g2_search": "5 credits",
+        "scavio_g2_reviews": "5 credits",
+        "scavio_home_depot_search": "2 credits",
+        "scavio_tripadvisor_locations": "2 credits",
+        "scavio_indeed_search": "2 credits",
+        "scavio_yelp_search": "2 credits",
+        "scavio_google_play_reviews": "2 credits",
+        "scavio_capterra_search": "2 credits",
+        "scavio_ebay_search": "1 credit",
+        "scavio_sec_lookup": "1 credit",
+        "scavio_meta_ads_search": "1 credit",
+        "scavio_companies_house_search": "1 credit",
     }
     tools = autogen_scavio.create_scavio_tools(api_key="test-key")
     by_name = {tool.name: tool for tool in tools}

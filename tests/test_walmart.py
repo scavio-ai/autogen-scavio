@@ -5,7 +5,10 @@ from __future__ import annotations
 import json
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from autogen_scavio.tools.walmart import create_walmart_product_tool, create_walmart_search_tool
+from autogen_scavio.tools.walmart import (
+    create_walmart_product_tool,
+    create_walmart_search_tool,
+)
 from tests.conftest import mock_walmart_product_response, mock_walmart_search_response
 
 
