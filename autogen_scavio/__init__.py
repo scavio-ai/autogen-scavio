@@ -41,7 +41,14 @@ from autogen_scavio.tools.ebay import (
     create_ebay_search_tool,
     create_ebay_seller_tool,
 )
-from autogen_scavio.tools.extract import create_extract_tool
+from autogen_scavio.tools.extract import (
+    create_batch_extract_tool,
+    create_batch_status_tool,
+    create_crawl_status_tool,
+    create_crawl_website_tool,
+    create_extract_tool,
+    create_map_website_tool,
+)
 from autogen_scavio.tools.g2 import (
     create_g2_product_tool,
     create_g2_reviews_tool,
@@ -257,7 +264,7 @@ from autogen_scavio.tools.zillow import (
     create_zillow_search_tool,
 )
 
-__version__ = "0.7.0"
+__version__ = "0.8.0"
 
 _PROVIDER_MAP: dict[str, list] = {
     "extract": [
@@ -544,13 +551,27 @@ _PROVIDER_MAP: dict[str, list] = {
         create_meta_ads_advertiser_tool,
         create_meta_ads_ad_tool,
     ],
+    "crawl": [
+        # OPT-IN: map, crawl and batch, the multi-page members of the Extract
+        # family. Crawl and batch bill per page, so this provider is left out
+        # of the default set; pass enable_crawl=True or name it in providers.
+        create_map_website_tool,
+        create_crawl_website_tool,
+        create_crawl_status_tool,
+        create_batch_extract_tool,
+        create_batch_status_tool,
+    ],
 }
+
+# Providers loaded only when asked for by name (or enable_crawl=True).
+_OPT_IN_PROVIDERS = frozenset({"crawl"})
 
 
 def create_scavio_tools(
     api_key: str | None = None,
     max_results: int = 5,
     providers: list[str] | None = None,
+    enable_crawl: bool = False,
 ) -> list[FunctionTool]:
     """Create Scavio search tools for AutoGen agents.
 
@@ -558,14 +579,20 @@ def create_scavio_tools(
         api_key: Scavio API key. If None, reads from SCAVIO_API_KEY env var.
         max_results: Default maximum results for search tools.
         providers: List of providers to include (e.g. ["google", "amazon"]).
-            Defaults to all providers.
+            Defaults to every provider except the opt-in "crawl" provider.
+        enable_crawl: Also include the "crawl" provider: map_website,
+            crawl_website, crawl_status, batch_extract and batch_status.
 
     Returns:
         List of FunctionTool instances ready for use with AutoGen agents.
     """
     configure(api_key)
 
-    selected = providers or list(_PROVIDER_MAP.keys())
+    selected = list(providers) if providers else [
+        p for p in _PROVIDER_MAP if p not in _OPT_IN_PROVIDERS
+    ]
+    if enable_crawl and "crawl" not in selected:
+        selected.append("crawl")
     tools: list[FunctionTool] = []
 
     for provider in selected:
@@ -690,6 +717,11 @@ __all__ = [
     "create_linkedin_post_tool",
     "create_linkedin_post_comments_tool",
     "create_extract_tool",
+    "create_map_website_tool",
+    "create_crawl_website_tool",
+    "create_crawl_status_tool",
+    "create_batch_extract_tool",
+    "create_batch_status_tool",
     "create_walmart_reviews_tool",
     "create_walmart_category_tool",
     "create_walmart_offers_tool",

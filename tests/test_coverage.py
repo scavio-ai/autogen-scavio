@@ -56,9 +56,13 @@ EXPECTED_TOOL_COUNTS = {
     "capterra": 3,
     "google_ads": 3,
     "meta_ads": 3,
+    # Opt-in (enable_crawl=True): map, crawl + status, batch + status. Not in
+    # the default tool set, because crawl and batch bill per page.
+    "crawl": 5,
 }
 
-TOTAL_TOOLS = sum(EXPECTED_TOOL_COUNTS.values())
+OPT_IN = {"crawl"}
+TOTAL_TOOLS = sum(n for p, n in EXPECTED_TOOL_COUNTS.items() if p not in OPT_IN)
 
 # The fanout batch: 92 platform endpoints across 22 platforms, plus extract.
 # walmart contributes all 7 of its endpoints to that 92, of which 5 are new.
@@ -75,6 +79,20 @@ def test_provider_map_matches_expected_counts():
 def test_default_tool_set_size():
     tools = autogen_scavio.create_scavio_tools(api_key="test-key")
     assert len(tools) == TOTAL_TOOLS == 188
+
+
+def test_crawl_provider_is_opt_in():
+    with_crawl = autogen_scavio.create_scavio_tools(api_key="test-key", enable_crawl=True)
+    assert len(with_crawl) == TOTAL_TOOLS + 5 == 193
+    assert [t.name for t in with_crawl[-5:]] == [
+        "scavio_map_website",
+        "scavio_crawl_website",
+        "scavio_crawl_status",
+        "scavio_batch_extract",
+        "scavio_batch_status",
+    ]
+    only = autogen_scavio.create_scavio_tools(api_key="test-key", providers=["crawl"])
+    assert len(only) == 5
 
 
 def test_extract_leads_the_default_tool_set():

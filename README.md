@@ -1,6 +1,6 @@
 # autogen-scavio
 
-AutoGen integration for the [Scavio API](https://scavio.dev?utm_source=autogen_integration), a [search API for AI agents](https://scavio.dev/search-api-for-ai-agents). Provides **188 tools across 31 platforms** -- retail, real estate, travel, jobs, app stores, company filings, ad libraries and social -- plus `scavio_extract`, which reads any URL as clean Markdown.
+AutoGen integration for the [Scavio API](https://scavio.dev?utm_source=autogen_integration), a [search API for AI agents](https://scavio.dev/search-api-for-ai-agents). Provides **188 tools across 31 platforms** -- retail, real estate, travel, jobs, app stores, company filings, ad libraries and social -- plus `scavio_extract`, which reads any URL as clean Markdown, and an opt-in `crawl` provider that maps a site's URLs, crawls a whole site, or batch-extracts a URL list.
 
 | Provider | Tools | Coverage |
 |----------|------:|----------|
@@ -92,11 +92,15 @@ tools = create_scavio_tools(providers=["amazon", "walmart", "ebay", "target"])
 # Read a page no platform endpoint covers
 tools = create_scavio_tools(providers=["extract"])
 
+# Whole sites: map, crawl and batch (opt-in, see below)
+tools = create_scavio_tools(providers=["extract", "crawl"])
+tools = create_scavio_tools(enable_crawl=True)  # every default provider + crawl
+
 # Providers: extract, google, amazon, youtube, walmart, reddit, tiktok,
 # tiktok_shop, instagram, x, linkedin, threads, kuaishou, ebay, target,
 # home_depot, zillow, booking, tripadvisor, indeed, airbnb, glassdoor, yelp,
 # app_store, google_play, sec, redfin, companies_house, g2, capterra,
-# google_ads, meta_ads
+# google_ads, meta_ads, and the opt-in crawl
 
 # Individual tool factories
 from autogen_scavio import create_web_search_tool, create_extract_tool
@@ -158,6 +162,50 @@ extract_tool = create_extract_tool()
 > to them. Each endpoint pages itself (`page`, `cursor`, `per_page`, `limit`,
 > `count`), and trimming rows out of a response that still reports `has_more`
 > would read as an empty tail.
+
+## Map, Crawl and Batch (opt-in)
+
+The `crawl` provider adds five tools for whole sites. It is **not in the default
+tool set** -- crawl and batch bill per page -- so name it in `providers` or pass
+`enable_crawl=True`.
+
+| Tool | What it does | Credits |
+|------|--------------|---------|
+| `scavio_map_website` | A site's page URLs from its sitemaps and start page, deduplicated and path-filtered | 1 on `normal` (up to 2 on `advanced`, up to 10 on `ultra`) |
+| `scavio_crawl_website` | Crawl a site from one URL; every page as Markdown, text or HTML | per successful page: 1 / 1 / 2 by `mode` |
+| `scavio_crawl_status` | A crawl's progress and page results, cursor-paged | free |
+| `scavio_batch_extract` | Extract a list of URLs in one job | per successful page: 1 / 1 / 2 by `mode` |
+| `scavio_batch_status` | A batch's progress and page results, cursor-paged | free |
+
+`scavio_crawl_website` and `scavio_batch_extract` start a background job, **wait
+up to `wait_seconds` (default 45, max 300)** for it to finish, and return the
+job's `id`, `status`, `pages`, `credits_used`, up to `limit` page results
+(default 10) and `next_cursor`. A job still `queued` or `running` when the wait
+ends keeps going: the agent reads it, and any further pages, with
+`scavio_crawl_status` / `scavio_batch_status` and the `id`. That keeps a turn
+bounded while a large crawl (up to 6 hours) runs on.
+
+```python
+from autogen_scavio import create_scavio_tools
+
+tools = create_scavio_tools(providers=["extract", "crawl"])
+crawl = next(t for t in tools if t.name == "scavio_crawl_website")
+result = await crawl.run_json(
+    {"url": "https://hono.dev/docs", "max_pages": 25, "include_paths": ["/docs/**"]},
+    None,
+)
+```
+
+Crawl and batch bill **per successful page** at extract's price for the mode
+(`normal` and `advanced` 1 credit, `ultra` 2); failed and skipped pages are
+free, and a job stops cleanly with `stopped_reason: "insufficient_credits"` if
+the balance runs out. Reading a job is free. Crawl and map obey the site's
+robots.txt; results are kept for 3 days. Plan limits (pages per crawl / active
+jobs / URLs per batch): Free 10/1/10, PAYG 100/1/50, Project 500/2/100,
+Bootstrap 2,000/3/500, Startup 5,000/5/1,000, Growth 10,000/10/1,000.
+Cancellation, webhooks and idempotency keys exist on the
+[REST API](https://scavio.dev/docs/extract) and in the `scavio` SDK, but are not
+tools here. Requires `scavio>=0.23.0` (0.8.0 raises the floor).
 
 ## Available Tools
 
@@ -387,6 +435,8 @@ them:**
 | Threads `profile`, `user_posts`, `user_replies` | 2 credits addressed by `user_id`, 4 by `username` -- a handle costs a second upstream call, because the upstream handle lookup is dead. Pass `user_id` whenever you have it. The other three Threads tools have no username form and are always 2. |
 | Kuaishou | Per endpoint, from 1 to 40. See the table above; a single platform figure would be wrong by up to 40x. |
 | `scavio_extract` | 1 credit on `mode` `normal` or `advanced`, 2 on `ultra`. Only a successful extraction is billed -- a dead link, bot wall or timeout costs nothing. |
+| `scavio_map_website` *(opt-in)* | 1 credit on `normal`; up to 2 on `advanced`, up to 10 on `ultra`, priced by what the call needed. |
+| `scavio_crawl_website`, `scavio_batch_extract` *(opt-in)* | Per successful page: 1 credit on `normal` or `advanced`, 2 on `ultra`. Failed and skipped pages are free; the status tools are free. |
 
 Five LinkedIn endpoints -- `person/contact`, `company/people`, `company/jobs`,
 `search/people` and `search/posts` -- were retired upstream and only answer 410,
