@@ -235,7 +235,7 @@ tools here. Requires `scavio>=0.23.0` (0.8.0 raises the floor).
 | YouTube | `scavio_youtube_video` | Full video details by ID or watch URL |
 | YouTube | `scavio_youtube_comments` | Top-level comments on a video |
 | YouTube | `scavio_youtube_comment_replies` | Replies to a comment, by reply_cursor |
-| YouTube | `scavio_youtube_transcript` | Transcript as plain text or SRT (8 credits) |
+| YouTube | `scavio_youtube_transcript` | Transcript as plain text or SRT (5 credits) |
 | YouTube | `scavio_youtube_related` | Videos related to a video |
 | YouTube | `scavio_youtube_channel_search` | Channel search by keyword |
 | YouTube | `scavio_youtube_channel` | Channel profile by ID, @handle, or URL |
@@ -409,7 +409,7 @@ before it picks. Most endpoints are 1 credit; these are the exceptions:
 |-------|--------:|
 | `scavio_youtube_search`, `scavio_youtube_shorts` | 2 |
 | `scavio_youtube_streams` | 3 |
-| `scavio_youtube_transcript` | 8 |
+| `scavio_youtube_transcript` | 5 |
 | `scavio_instagram_user_posts` | 2 |
 | `scavio_instagram_post`, `scavio_instagram_comment_replies` | 8 |
 | Every other Instagram tool | 10 |

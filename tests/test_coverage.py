@@ -134,7 +134,7 @@ def test_every_tool_description_states_its_credit_cost():
     costs = {
         "scavio_youtube_search": "2 credits",
         "scavio_youtube_shorts": "2 credits",
-        "scavio_youtube_transcript": "8 credits",
+        "scavio_youtube_transcript": "5 credits",
         "scavio_youtube_streams": "3 credits",
         "scavio_instagram_profile": "10 credits",
         "scavio_instagram_user_posts": "2 credits",

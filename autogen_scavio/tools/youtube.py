@@ -210,7 +210,7 @@ def create_youtube_transcript_tool() -> FunctionTool:
 
     return FunctionTool(
         scavio_youtube_transcript,
-        description="Fetch the transcript for a YouTube video (8 credits).",
+        description="Fetch the transcript for a YouTube video (5 credits).",
     )
 
 
