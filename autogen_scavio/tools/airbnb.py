@@ -68,7 +68,7 @@ def create_airbnb_search_tool() -> FunctionTool:
         currency: Annotated[
             str | None,
             "ISO 4217 currency for prices, 3 letters (default 'USD'). Without it "
-            "Airbnb prices off the proxy exit and identical requests disagree.",
+            "Airbnb picks a currency itself and identical requests can disagree.",
         ] = None,
         page: Annotated[
             int | None,
@@ -119,7 +119,7 @@ def create_airbnb_search_tool() -> FunctionTool:
                 tv, or raw numeric Airbnb amenity ids. An unrecognised NAME is rejected
                 before the scrape.
             currency: ISO 4217 currency for prices, 3 letters (default 'USD'). Without
-                it Airbnb prices off the proxy exit and identical requests disagree.
+                it Airbnb picks a currency itself and identical requests can disagree.
             page: Results page, 1-based. 18 listings per page. Cannot be combined with
                 cursor.
             cursor: next_cursor from a previous response (1-500 characters); wins over

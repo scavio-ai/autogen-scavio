@@ -106,7 +106,7 @@ def create_booking_search_tool() -> FunctionTool:
         currency: Annotated[
             str | None,
             "ISO 4217 currency for prices, 3 letters (default 'USD'). Without it "
-            "Booking prices off the proxy exit and identical requests disagree.",
+            "Booking picks a currency itself and identical requests can disagree.",
         ] = None,
     ) -> str:
         """Booking.com properties for a destination and stay: live nightly price, review
@@ -147,7 +147,7 @@ def create_booking_search_tool() -> FunctionTool:
                 Ages, not a count.
             rooms: Rooms required, >= 1 (default 1).
             currency: ISO 4217 currency for prices, 3 letters (default 'USD'). Without
-                it Booking prices off the proxy exit and identical requests disagree.
+                it Booking picks a currency itself and identical requests can disagree.
 
         Returns:
             JSON string with properties for a destination and stay: live nightly price,
@@ -227,7 +227,7 @@ def create_booking_hotel_tool() -> FunctionTool:
         currency: Annotated[
             str | None,
             "ISO 4217 currency for prices, 3 letters (default 'USD'). Without it "
-            "Booking prices off the proxy exit and identical requests disagree.",
+            "Booking picks a currency itself and identical requests can disagree.",
         ] = None,
     ) -> str:
         """One Booking.com property in full: rooms and rate plans, facilities, house
@@ -250,7 +250,7 @@ def create_booking_hotel_tool() -> FunctionTool:
                 Ages, not a count.
             rooms: Rooms required, >= 1 (default 1).
             currency: ISO 4217 currency for prices, 3 letters (default 'USD'). Without
-                it Booking prices off the proxy exit and identical requests disagree.
+                it Booking picks a currency itself and identical requests can disagree.
 
         Returns:
             JSON string with one property in full: rooms and rate plans, facilities,

@@ -57,7 +57,7 @@ def create_meta_ads_search_tool() -> FunctionTool:
         cursor-paginated.
 
         Pagination: FULL CURSOR PAGINATION - page 1 = 30 ads via SSR, then 10 per page
-        via a GraphQL POST off next_cursor. Walk has_next_page to scrape a whole query.
+        via next_cursor. Walk has_next_page to scrape a whole query.
         THE BIG DIFFERENTIATOR over the $79-399/mo tools - lead with it.
 
         Args:

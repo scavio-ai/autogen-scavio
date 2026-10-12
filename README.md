@@ -109,7 +109,7 @@ web_tool = create_web_search_tool(max_results=10)
 extract_tool = create_extract_tool()
 ```
 
-> **Amazon changed in 0.4.0 (breaking).** The upstream provider moved. `domain`
+> **Amazon changed in 0.4.0 (breaking).** The Amazon endpoint changed. `domain`
 > is replaced by `country`, a two-letter marketplace code (`us`, `gb` -- the UK
 > is `gb`, not `uk` -- `de`, `jp`, ...). `sort_by`, `pages`, `category_id`,
 > `merchant_id`, `language`, `currency`, `device`, `zip_code` and
@@ -432,7 +432,7 @@ them:**
 | Surface | Price |
 |---------|-------|
 | Walmart `search` and `category` | 1 credit on `domain` `com` or `ca`, 2 on `com.mx`. The other five Walmart tools take no `domain` and are always 1. |
-| Threads `profile`, `user_posts`, `user_replies` | 2 credits addressed by `user_id`, 4 by `username` -- a handle costs a second upstream call, because the upstream handle lookup is dead. Pass `user_id` whenever you have it. The other three Threads tools have no username form and are always 2. |
+| Threads `profile`, `user_posts`, `user_replies` | 2 credits addressed by `user_id`, 4 by `username` -- a handle costs a second lookup. Pass `user_id` whenever you have it. The other three Threads tools have no username form and are always 2. |
 | Kuaishou | Per endpoint, from 1 to 40. See the table above; a single platform figure would be wrong by up to 40x. |
 | `scavio_extract` | 1 credit on `mode` `normal` or `advanced`, 2 on `ultra`. Only a successful extraction is billed -- a dead link, bot wall or timeout costs nothing. |
 | `scavio_map_website` *(opt-in)* | 1 credit on `normal`; up to 2 on `advanced`, up to 10 on `ultra`, priced by what the call needed. |

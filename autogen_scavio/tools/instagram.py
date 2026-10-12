@@ -61,8 +61,8 @@ def create_instagram_user_posts_tool(max_results: int = 5) -> FunctionTool:
             cursor: Pagination cursor from previous response.
 
         Returns:
-            JSON string with the user's posts. The primary upstream leg nests
-            the items at data.data; a fallback leg returns them at data.items.
+            JSON string with the user's posts. The items are at
+            data.data, or at data.items on some responses.
         """
         client = get_async_client()
 

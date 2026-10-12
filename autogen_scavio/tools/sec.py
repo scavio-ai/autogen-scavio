@@ -1,7 +1,7 @@
 """Scavio SEC EDGAR tools for AutoGen.
 
 6 endpoints. 1 credit flat on all six endpoints - SEC EDGAR is an official free JSON
-API. include_history can buy up to ten upstream fetches and is still 1 credit.
+API. include_history can take up to ten lookups and is still 1 credit.
 
 LOOKUP FIRST: create_sec_lookup_tool is the entry point. Every other SEC EDGAR endpoint
 is keyed by an id that only exists inside SEC EDGAR's own URLs, so a caller holding a

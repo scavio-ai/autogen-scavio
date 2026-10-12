@@ -24,8 +24,7 @@ def create_yelp_search_tool() -> FunctionTool:
         location: Annotated[
             str | None,
             "Where to look (1-200 characters): city and region, a full address, or a "
-            "postcode. Effectively required - Yelp geolocates a location-less search "
-            "off the proxy exit, so the same request answers about a different metro "
+            "postcode. Effectively required - without it Yelp picks a location itself, so the same request can answer about a different metro "
             "run to run.",
         ] = None,
         page: Annotated[
@@ -73,8 +72,7 @@ def create_yelp_search_tool() -> FunctionTool:
             term: What to look for (1-200 characters): a category ('plumbers'), a dish,
                 or a business name. Required together with location unless url is given.
             location: Where to look (1-200 characters): city and region, a full address,
-                or a postcode. Effectively required - Yelp geolocates a location-less
-                search off the proxy exit, so the same request answers about a different
+                or a postcode. Effectively required - without it Yelp picks a location itself, so the same request can answer about a different
                 metro run to run.
             page: Results page, 1-based. Yelp fixes the page size at 10.
             sort: Result ordering (upstream default 'recommended'). Closed enum: Yelp

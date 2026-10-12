@@ -34,8 +34,7 @@ def create_ebay_search_tool() -> FunctionTool:
             ]
             | None,
             "Result sort order. Defaults to 'best_match'. eBay's 'Distance: nearest "
-            "first' is deliberately unsupported (it ranks against our proxy exit, not "
-            "the caller).",
+            "first' is deliberately unsupported (it would not rank by the location of the caller).",
         ] = None,
         min_price: Annotated[
             float | None,
@@ -89,8 +88,7 @@ def create_ebay_search_tool() -> FunctionTool:
                 ebay.com/usr/<name>. Can be sent with no query.
             page: Results page, 1-based.
             sort_by: Result sort order. Defaults to 'best_match'. eBay's 'Distance:
-                nearest first' is deliberately unsupported (it ranks against our proxy
-                exit, not the caller).
+                nearest first' is deliberately unsupported (it would not rank by the location of the caller).
             min_price: Minimum price, inclusive. Must be 0 or greater.
             max_price: Maximum price, inclusive. Must be 0 or greater.
             condition: Item condition filter. 'refurbished' is eBay's parent condition,

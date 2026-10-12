@@ -1,7 +1,7 @@
 """Scavio Glassdoor tools for AutoGen.
 
 4 endpoints. 1 credit flat on all four endpoints. Addressing reviews or salaries by
-employer_id costs us two upstream fetches where the url form costs one; the price to you
+employer_id takes an extra lookup where the url form does not; the price to you
 is 1 either way, but passing back reviews_url / salaries_url is the faster path.
 
 LOOKUP FIRST: create_glassdoor_companies_tool is the entry point. Every other Glassdoor
@@ -135,8 +135,7 @@ def create_glassdoor_reviews_tool() -> FunctionTool:
         employer_id: Annotated[
             str | None,
             "Glassdoor employer id (1-50 characters): '1699', 'E1699' or 'IE1699'. "
-            "Must be a STRING - a JSON number is rejected. Addressing by id costs two "
-            "upstream fetches; the customer price is unchanged.",
+            "Must be a STRING - a JSON number is rejected. Addressing by id takes an extra lookup; the customer price is unchanged.",
         ] = None,
         company: Annotated[
             str | None,
@@ -176,7 +175,7 @@ def create_glassdoor_reviews_tool() -> FunctionTool:
         Args:
             employer_id: Glassdoor employer id (1-50 characters): '1699', 'E1699' or
                 'IE1699'. Must be a STRING - a JSON number is rejected. Addressing by id
-                costs two upstream fetches; the customer price is unchanged.
+                takes an extra lookup; the customer price is unchanged.
             company: Employer name as it appears in a Glassdoor slug (1-200 characters).
                 COSMETIC: ignored when url is set, and it does not satisfy the
                 employer_id-or-url requirement.
@@ -232,8 +231,7 @@ def create_glassdoor_salaries_tool() -> FunctionTool:
         employer_id: Annotated[
             str | None,
             "Glassdoor employer id (1-50 characters): '1699', 'E1699' or 'IE1699'. "
-            "Must be a STRING - a JSON number is rejected. Addressing by id costs two "
-            "upstream fetches; the customer price is unchanged.",
+            "Must be a STRING - a JSON number is rejected. Addressing by id takes an extra lookup; the customer price is unchanged.",
         ] = None,
         company: Annotated[
             str | None,
@@ -264,7 +262,7 @@ def create_glassdoor_salaries_tool() -> FunctionTool:
         Args:
             employer_id: Glassdoor employer id (1-50 characters): '1699', 'E1699' or
                 'IE1699'. Must be a STRING - a JSON number is rejected. Addressing by id
-                costs two upstream fetches; the customer price is unchanged.
+                takes an extra lookup; the customer price is unchanged.
             company: Employer name as it appears in a Glassdoor slug (1-200 characters).
                 COSMETIC: ignored when url is set, and it does not satisfy the
                 employer_id-or-url requirement.

@@ -264,7 +264,7 @@ from autogen_scavio.tools.zillow import (
     create_zillow_search_tool,
 )
 
-__version__ = "0.8.2"
+__version__ = "0.8.3"
 
 _PROVIDER_MAP: dict[str, list] = {
     "extract": [

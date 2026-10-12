@@ -2,7 +2,7 @@
 
 6 endpoints. BODY-PRICED, not flat: profile, user_posts and user_replies cost 2 credits
 addressed by user_id and 4 addressed by username - a handle has to be resolved through
-people search first, because the upstream handle lookup is dead. Pass user_id whenever
+people search first, because the handle has to be resolved first. Pass user_id whenever
 you have it. post, post_comments and search_users have no username form and are always 2
 credits.
 """
