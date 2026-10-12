@@ -38,7 +38,7 @@ def create_instagram_profile_tool() -> FunctionTool:
         scavio_instagram_profile,
         description=(
             "Look up an Instagram user profile by username or user_id "
-            "(10 credits)."
+            "(1 credit)."
         ),
     )
 
@@ -83,7 +83,7 @@ def create_instagram_user_posts_tool(max_results: int = 5) -> FunctionTool:
 
     return FunctionTool(
         scavio_instagram_user_posts,
-        description="Fetch an Instagram user's posts (2 credits).",
+        description="Fetch an Instagram user's posts (2 credits per page).",
     )
 
 
@@ -124,7 +124,7 @@ def create_instagram_user_reels_tool(max_results: int = 5) -> FunctionTool:
 
     return FunctionTool(
         scavio_instagram_user_reels,
-        description="Fetch an Instagram user's reels (10 credits).",
+        description="Fetch an Instagram user's reels (1 credit; 2 the first time a username is looked up).",
     )
 
 
@@ -165,7 +165,7 @@ def create_instagram_user_tagged_tool(max_results: int = 5) -> FunctionTool:
 
     return FunctionTool(
         scavio_instagram_user_tagged,
-        description="Fetch posts an Instagram user is tagged in (10 credits).",
+        description="Fetch posts an Instagram user is tagged in (1 credit; 2 the first time a username is looked up).",
     )
 
 
@@ -198,7 +198,7 @@ def create_instagram_user_stories_tool() -> FunctionTool:
 
     return FunctionTool(
         scavio_instagram_user_stories,
-        description="Fetch an Instagram user's active stories (10 credits).",
+        description="Fetch an Instagram user's active stories (2 credits).",
     )
 
 
@@ -236,7 +236,7 @@ def create_instagram_post_tool() -> FunctionTool:
         scavio_instagram_post,
         description=(
             "Fetch details for a single Instagram post by url, media_id, or "
-            "shortcode (8 credits)."
+            "shortcode (2 credits)."
         ),
     )
 
@@ -278,7 +278,7 @@ def create_instagram_post_comments_tool(max_results: int = 10) -> FunctionTool:
 
     return FunctionTool(
         scavio_instagram_post_comments,
-        description="Fetch comments on an Instagram post (10 credits).",
+        description="Fetch comments on an Instagram post (2 credits per page).",
     )
 
 
@@ -318,7 +318,7 @@ def create_instagram_comment_replies_tool(max_results: int = 10) -> FunctionTool
         scavio_instagram_comment_replies,
         description=(
             "Fetch replies to a specific comment on an Instagram post "
-            "(8 credits). Requires media_id, which /instagram/post returns."
+            "(2 credits). Requires media_id, which /instagram/post returns."
         ),
     )
 
@@ -354,7 +354,7 @@ def create_instagram_search_users_tool(max_results: int = 5) -> FunctionTool:
 
     return FunctionTool(
         scavio_instagram_search_users,
-        description="Search Instagram users by keyword (10 credits).",
+        description="Search Instagram users by keyword (2 credits; 8 with a cursor).",
     )
 
 
@@ -389,7 +389,7 @@ def create_instagram_search_hashtags_tool(max_results: int = 5) -> FunctionTool:
 
     return FunctionTool(
         scavio_instagram_search_hashtags,
-        description="Search Instagram hashtags by keyword (10 credits).",
+        description="Search Instagram hashtags by keyword (2 credits; 8 with a cursor).",
     )
 
 
@@ -430,7 +430,7 @@ def create_instagram_user_followers_tool(max_results: int = 10) -> FunctionTool:
 
     return FunctionTool(
         scavio_instagram_user_followers,
-        description="Fetch an Instagram user's followers (10 credits).",
+        description="Fetch an Instagram user's followers (2 credits per page).",
     )
 
 
@@ -471,5 +471,5 @@ def create_instagram_user_followings_tool(max_results: int = 10) -> FunctionTool
 
     return FunctionTool(
         scavio_instagram_user_followings,
-        description="Fetch accounts an Instagram user is following (10 credits).",
+        description="Fetch accounts an Instagram user is following (2 credits per page).",
     )
