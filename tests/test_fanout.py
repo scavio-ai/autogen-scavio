@@ -94,6 +94,7 @@ FANOUT_ROUTES: dict[str, tuple[str, str]] = {
     "scavio_target_category": ("target.category", "/api/v1/target/category"),
     "scavio_target_product": ("target.product", "/api/v1/target/product"),
     "scavio_target_reviews": ("target.reviews", "/api/v1/target/reviews"),
+    "scavio_target_availability": ("target.availability", "/api/v1/target/availability"),
     "scavio_home_depot_search": ("home_depot.search", "/api/v1/homedepot/search"),
     "scavio_home_depot_product": ("home_depot.product", "/api/v1/homedepot/product"),
     "scavio_home_depot_reviews": ("home_depot.reviews", "/api/v1/homedepot/reviews"),
@@ -253,7 +254,7 @@ def test_every_fanout_endpoint_has_a_registered_tool():
     registered = set(_tools_by_name())
     missing = sorted(name for name in FANOUT_ROUTES if name not in registered)
     assert missing == []
-    assert len(FANOUT_ROUTES) == 93
+    assert len(FANOUT_ROUTES) == 94
 
 
 @pytest.mark.parametrize("tool_name", sorted(FANOUT_ROUTES))

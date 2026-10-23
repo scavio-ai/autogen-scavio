@@ -1,6 +1,6 @@
 """Scavio Target tools for AutoGen.
 
-4 endpoints. 1 credit flat on all four endpoints.
+5 endpoints. 1 credit flat on all five endpoints.
 """
 
 from __future__ import annotations
@@ -33,7 +33,7 @@ def create_target_search_tool() -> FunctionTool:
         ] = None,
         store_id: Annotated[
             str | None,
-            "Numeric Target store id whose prices and availability the response "
+            "Numeric Target store id whose prices the response "
             "reflects. Defaults to '3991', the store target.com uses with no store "
             "context.",
         ] = None,
@@ -48,8 +48,7 @@ def create_target_search_tool() -> FunctionTool:
             count: Results per page, 1-28. Defaults to 24; Target rejects anything above
                 28 outright.
             sort: Result sort order. Defaults to 'relevance'.
-            store_id: Numeric Target store id whose prices and availability the response
-                reflects. Defaults to '3991', the store target.com uses with no store
+            store_id: Numeric Target store id whose prices the response reflects. Defaults to '3991', the store target.com uses with no store
                 context.
 
         Returns:
@@ -105,7 +104,7 @@ def create_target_category_tool() -> FunctionTool:
         ] = None,
         store_id: Annotated[
             str | None,
-            "Numeric Target store id whose prices and availability the response "
+            "Numeric Target store id whose prices the response "
             "reflects. Defaults to '3991'.",
         ] = None,
     ) -> str:
@@ -121,8 +120,7 @@ def create_target_category_tool() -> FunctionTool:
             count: Results per page, 1-28. Defaults to 24; Target rejects anything above
                 28 outright.
             sort: Result sort order. Defaults to 'relevance'.
-            store_id: Numeric Target store id whose prices and availability the response
-                reflects. Defaults to '3991'.
+            store_id: Numeric Target store id whose prices the response reflects. Defaults to '3991'.
 
         Returns:
             JSON string with products in a category, same shape as search plus the
@@ -164,7 +162,7 @@ def create_target_product_tool() -> FunctionTool:
         ],
         store_id: Annotated[
             str | None,
-            "Numeric Target store id whose prices and availability the response "
+            "Numeric Target store id whose prices the response "
             "reflects. Defaults to '3991'.",
         ] = None,
     ) -> str:
@@ -175,8 +173,7 @@ def create_target_product_tool() -> FunctionTool:
             tcin: Target catalog id (tcin, e.g. '1010453160'). A colour/size child tcin
                 is answered by its variation parent, with the child present in
                 'variants'.
-            store_id: Numeric Target store id whose prices and availability the response
-                reflects. Defaults to '3991'.
+            store_id: Numeric Target store id whose prices the response reflects. Defaults to '3991'.
 
         Returns:
             JSON string with product details: price, rating, images, specifications,
@@ -216,7 +213,7 @@ def create_target_reviews_tool() -> FunctionTool:
         ] = None,
         store_id: Annotated[
             str | None,
-            "Numeric Target store id whose prices and availability the response "
+            "Numeric Target store id whose prices the response "
             "reflects. Defaults to '3991'.",
         ] = None,
     ) -> str:
@@ -227,8 +224,7 @@ def create_target_reviews_tool() -> FunctionTool:
             tcin: Target catalog id (tcin, e.g. '1010453160').
             limit: Trim the returned reviews to at most this many (1 or greater). Target
                 publishes 8 anonymously and offers no paging, so this only trims.
-            store_id: Numeric Target store id whose prices and availability the response
-                reflects. Defaults to '3991'.
+            store_id: Numeric Target store id whose prices the response reflects. Defaults to '3991'.
 
         Returns:
             JSON string with reviews with the rating breakdown, per-attribute averages
@@ -253,5 +249,56 @@ def create_target_reviews_tool() -> FunctionTool:
             "Target reviews with the rating breakdown, per-attribute averages and "
             "guest photos. 8 review bodies maximum and no paging; expect around 40 "
             "seconds. Costs 1 credit."
+        ),
+    )
+
+
+def create_target_availability_tool() -> FunctionTool:
+    """Create a Scavio Target store availability tool."""
+
+    async def scavio_target_availability(
+        tcin: Annotated[str, "Target catalog id (tcin, e.g. '85978609')."],
+        zip: Annotated[str, "5-digit US ZIP code to search around."],
+        radius: Annotated[
+            int | None,
+            "Search radius in miles, 1-100. Defaults to 25. At most 20 stores.",
+        ] = None,
+        store_id: Annotated[
+            str | None,
+            "Return only this Target store. It must be within radius of zip.",
+        ] = None,
+    ) -> str:
+        """In-store stock for a Target product at every store near a ZIP.
+
+        Args:
+            tcin: Target catalog id (tcin, e.g. '85978609').
+            zip: 5-digit US ZIP code to search around.
+            radius: Search radius in miles, 1-100. Defaults to 25.
+            store_id: Return only this Target store.
+
+        Returns:
+            JSON string with one row per store: units available, in-store, pickup,
+            curbside and ship-to-store status, distance, address and hours.
+        """
+        client = get_async_client()
+
+        params: dict = {
+            "tcin": tcin,
+            "zip": zip,
+            "radius": radius,
+            "store_id": store_id,
+        }
+        params = {k: v for k, v in params.items() if v is not None}
+
+        raw = await client.target.availability(**params)
+
+        return format_response(raw)
+
+    return FunctionTool(
+        scavio_target_availability,
+        description=(
+            "In-store stock for a Target product at every store near a ZIP: units "
+            "available, in-store, pickup, curbside and ship-to-store status, distance, "
+            "address and hours. Costs 1 credit."
         ),
     )

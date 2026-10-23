@@ -1,6 +1,6 @@
 # autogen-scavio
 
-AutoGen integration for the [Scavio API](https://scavio.dev?utm_source=autogen_integration), a [search API for AI agents](https://scavio.dev/search-api-for-ai-agents). Provides **188 tools across 31 platforms** -- retail, real estate, travel, jobs, app stores, company filings, ad libraries and social -- plus `scavio_extract`, which reads any URL as clean Markdown, and an opt-in `crawl` provider that maps a site's URLs, crawls a whole site, or batch-extracts a URL list.
+AutoGen integration for the [Scavio API](https://scavio.dev?utm_source=autogen_integration), a [search API for AI agents](https://scavio.dev/search-api-for-ai-agents). Provides **189 tools across 31 platforms** -- retail, real estate, travel, jobs, app stores, company filings, ad libraries and social -- plus `scavio_extract`, which reads any URL as clean Markdown, and an opt-in `crawl` provider that maps a site's URLs, crawls a whole site, or batch-extracts a URL list.
 
 | Provider | Tools | Coverage |
 |----------|------:|----------|
@@ -17,7 +17,7 @@ AutoGen integration for the [Scavio API](https://scavio.dev?utm_source=autogen_i
 | [Walmart](https://scavio.dev/docs/walmart-api) | 7 | Every endpoint |
 | [Threads](https://scavio.dev/docs/threads-profile) | 6 | Every endpoint |
 | [SEC EDGAR](https://scavio.dev/docs/sec-edgar-lookup) | 6 | Every endpoint |
-| [Target](https://scavio.dev/docs/target-search) | 4 | Every endpoint |
+| [Target](https://scavio.dev/docs/target-search) | 5 | Every endpoint |
 | [Tripadvisor](https://scavio.dev/docs/tripadvisor-locations) | 4 | Every endpoint |
 | [Indeed](https://scavio.dev/docs/indeed-search) | 4 | Every endpoint |
 | [Glassdoor](https://scavio.dev/docs/glassdoor-companies) | 4 | Every endpoint |

@@ -171,6 +171,7 @@ from autogen_scavio.tools.sec import (
     create_sec_search_tool,
 )
 from autogen_scavio.tools.target import (
+    create_target_availability_tool,
     create_target_category_tool,
     create_target_product_tool,
     create_target_reviews_tool,
@@ -264,7 +265,7 @@ from autogen_scavio.tools.zillow import (
     create_zillow_search_tool,
 )
 
-__version__ = "0.8.3"
+__version__ = "0.9.0"
 
 _PROVIDER_MAP: dict[str, list] = {
     "extract": [
@@ -448,6 +449,7 @@ _PROVIDER_MAP: dict[str, list] = {
         create_target_category_tool,
         create_target_product_tool,
         create_target_reviews_tool,
+        create_target_availability_tool,
     ],
     "home_depot": [
         create_home_depot_search_tool,
@@ -754,6 +756,7 @@ __all__ = [
     "create_target_category_tool",
     "create_target_product_tool",
     "create_target_reviews_tool",
+    "create_target_availability_tool",
     "create_home_depot_search_tool",
     "create_home_depot_product_tool",
     "create_home_depot_reviews_tool",
