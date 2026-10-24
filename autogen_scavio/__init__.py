@@ -86,6 +86,11 @@ from autogen_scavio.tools.google_play import (
     create_google_play_reviews_tool,
     create_google_play_search_tool,
 )
+from autogen_scavio.tools.heb import (
+    create_heb_product_tool,
+    create_heb_search_tool,
+    create_heb_stores_tool,
+)
 from autogen_scavio.tools.home_depot import (
     create_home_depot_product_tool,
     create_home_depot_reviews_tool,
@@ -110,6 +115,10 @@ from autogen_scavio.tools.instagram import (
     create_instagram_user_reels_tool,
     create_instagram_user_stories_tool,
     create_instagram_user_tagged_tool,
+)
+from autogen_scavio.tools.kroger import (
+    create_kroger_product_tool,
+    create_kroger_search_tool,
 )
 from autogen_scavio.tools.kuaishou import (
     create_kuaishou_comment_replies_tool,
@@ -265,7 +274,7 @@ from autogen_scavio.tools.zillow import (
     create_zillow_search_tool,
 )
 
-__version__ = "0.9.0"
+__version__ = "0.10.0"
 
 _PROVIDER_MAP: dict[str, list] = {
     "extract": [
@@ -451,10 +460,19 @@ _PROVIDER_MAP: dict[str, list] = {
         create_target_reviews_tool,
         create_target_availability_tool,
     ],
+    "heb": [
+        create_heb_search_tool,
+        create_heb_product_tool,
+        create_heb_stores_tool,
+    ],
     "home_depot": [
         create_home_depot_search_tool,
         create_home_depot_product_tool,
         create_home_depot_reviews_tool,
+    ],
+    "kroger": [
+        create_kroger_search_tool,
+        create_kroger_product_tool,
     ],
     "zillow": [
         create_zillow_search_tool,
@@ -757,9 +775,14 @@ __all__ = [
     "create_target_product_tool",
     "create_target_reviews_tool",
     "create_target_availability_tool",
+    "create_heb_search_tool",
+    "create_heb_product_tool",
+    "create_heb_stores_tool",
     "create_home_depot_search_tool",
     "create_home_depot_product_tool",
     "create_home_depot_reviews_tool",
+    "create_kroger_search_tool",
+    "create_kroger_product_tool",
     "create_zillow_search_tool",
     "create_zillow_property_tool",
     "create_zillow_agent_reviews_tool",

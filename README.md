@@ -1,6 +1,6 @@
 # autogen-scavio
 
-AutoGen integration for the [Scavio API](https://scavio.dev?utm_source=autogen_integration), a [search API for AI agents](https://scavio.dev/search-api-for-ai-agents). Provides **189 tools across 31 platforms** -- retail, real estate, travel, jobs, app stores, company filings, ad libraries and social -- plus `scavio_extract`, which reads any URL as clean Markdown, and an opt-in `crawl` provider that maps a site's URLs, crawls a whole site, or batch-extracts a URL list.
+AutoGen integration for the [Scavio API](https://scavio.dev?utm_source=autogen_integration), a [search API for AI agents](https://scavio.dev/search-api-for-ai-agents). Provides **194 tools across 33 platforms** -- retail, real estate, travel, jobs, app stores, company filings, ad libraries and social -- plus `scavio_extract`, which reads any URL as clean Markdown, and an opt-in `crawl` provider that maps a site's URLs, crawls a whole site, or batch-extracts a URL list.
 
 | Provider | Tools | Coverage |
 |----------|------:|----------|
@@ -24,7 +24,9 @@ AutoGen integration for the [Scavio API](https://scavio.dev?utm_source=autogen_i
 | [Companies House](https://scavio.dev/docs/companies-house-search) | 4 | Every endpoint |
 | Amazon | 3 | Search, product, offers |
 | [eBay](https://scavio.dev/docs/ebay-search) | 3 | Every endpoint, live and sold listings |
+| [HEB](https://scavio.dev/docs/heb-search) | 3 | Every endpoint |
 | [Home Depot](https://scavio.dev/docs/home-depot-search) | 3 | Every endpoint |
+| [Kroger](https://scavio.dev/docs/kroger-search) | 2 | Every endpoint |
 | [Zillow](https://scavio.dev/docs/zillow-search) | 3 | Every endpoint |
 | [Redfin](https://scavio.dev/docs/redfin-search) | 3 | Every endpoint |
 | [Booking.com](https://scavio.dev/docs/booking-search) | 3 | Every endpoint |
