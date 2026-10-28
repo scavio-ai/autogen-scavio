@@ -20,7 +20,14 @@ def create_heb_search_tool() -> FunctionTool:
         page: Annotated[int | None, "Page, 1-based."] = None,
         page_size: Annotated[
             int | None,
-            "Results per page, max 60. Default 30.",
+            "Results per page, 1-60. Defaults to 60.",
+        ] = None,
+        store_id: Annotated[
+            str | None,
+            "HEB store number from scavio_heb_stores (store_number), e.g. '441'. "
+            "Prices, stock, aisle location and assortment come from that store; the "
+            "store used is echoed in data.store {store_id, name}. US only. Omit for "
+            "HEB's default store.",
         ] = None,
     ) -> str:
         """Search HEB grocery products by keyword.
@@ -31,7 +38,8 @@ def create_heb_search_tool() -> FunctionTool:
         Args:
             query: Search keywords.
             page: Page, 1-based.
-            page_size: Results per page, max 60. Default 30.
+            page_size: Results per page, 1-60. Defaults to 60.
+            store_id: HEB store number from scavio_heb_stores. US only.
 
         Returns:
             JSON string with search results.
@@ -42,6 +50,7 @@ def create_heb_search_tool() -> FunctionTool:
             "query": query,
             "page": page,
             "page_size": page_size,
+            "store_id": store_id,
         }
         params = {k: v for k, v in params.items() if v is not None}
 
@@ -54,7 +63,9 @@ def create_heb_search_tool() -> FunctionTool:
         description=(
             "Search HEB grocery products by keyword. Returns price (cents), "
             "list price, sale status, unit price, size, UPC, stock, EBT/SNAP "
-            "eligibility, category, aisle location and product URL. Costs 2 credits."
+            "eligibility, category, aisle location and product URL. Pass store_id "
+            "(store_number from scavio_heb_stores) for one store's prices, stock and "
+            "assortment. Costs 2 credits."
         ),
     )
 
@@ -70,19 +81,29 @@ def create_heb_product_tool() -> FunctionTool:
         ] = None,
         product_id: Annotated[
             str | None,
-            "HEB product id (numeric id at the end of a product URL). Requires slug.",
+            "HEB product id (numeric id at the end of a product URL). Needs slug, "
+            "unless store_id is set (then product_id alone works).",
         ] = None,
         slug: Annotated[
             str | None,
-            "Product slug (readable part of the URL). Required with product_id.",
+            "Product slug (readable part of the URL). Required with product_id "
+            "unless store_id is set.",
+        ] = None,
+        store_id: Annotated[
+            str | None,
+            "HEB store number from scavio_heb_stores (store_number), e.g. '441'. "
+            "Prices, stock, aisle location and assortment come from that store; the "
+            "store used is echoed in data.store {store_id, name}. US only. Omit for "
+            "HEB's default store.",
         ] = None,
     ) -> str:
         """Full HEB product detail: nutrition, ingredients, images, coupons, EBT/SNAP.
 
         Args:
             product_url: Full or relative product URL from heb.com. Preferred.
-            product_id: HEB product id. Requires slug.
-            slug: Product slug. Required with product_id.
+            product_id: HEB product id. Needs slug unless store_id is set.
+            slug: Product slug. Required with product_id unless store_id is set.
+            store_id: HEB store number from scavio_heb_stores. US only.
 
         Returns:
             JSON string with product details.
@@ -93,6 +114,7 @@ def create_heb_product_tool() -> FunctionTool:
             "product_url": product_url,
             "product_id": product_id,
             "slug": slug,
+            "store_id": store_id,
         }
         params = {k: v for k, v in params.items() if v is not None}
 
@@ -105,7 +127,9 @@ def create_heb_product_tool() -> FunctionTool:
         description=(
             "Full HEB product detail: nutrition facts, ingredients, description, "
             "images, similar products, coupons, EBT/SNAP eligibility, breadcrumbs, "
-            "aisle location. Pass product_url or slug + product_id. Costs 2 credits."
+            "aisle location. Pass product_url or slug + product_id; with store_id "
+            "(store_number from scavio_heb_stores) product_id alone works and price, "
+            "stock and aisle are for that store. Costs 2 credits."
         ),
     )
 

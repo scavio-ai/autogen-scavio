@@ -39,6 +39,8 @@ EXPECTED_TOOL_COUNTS = {
     "kuaishou": 14,
     "ebay": 3,
     "target": 5,
+    "heb": 3,
+    "kroger": 2,
     "home_depot": 3,
     "zillow": 3,
     "booking": 3,
@@ -78,12 +80,12 @@ def test_provider_map_matches_expected_counts():
 
 def test_default_tool_set_size():
     tools = autogen_scavio.create_scavio_tools(api_key="test-key")
-    assert len(tools) == TOTAL_TOOLS == 189
+    assert len(tools) == TOTAL_TOOLS == 194
 
 
 def test_crawl_provider_is_opt_in():
     with_crawl = autogen_scavio.create_scavio_tools(api_key="test-key", enable_crawl=True)
-    assert len(with_crawl) == TOTAL_TOOLS + 5 == 194
+    assert len(with_crawl) == TOTAL_TOOLS + 5 == 199
     assert [t.name for t in with_crawl[-5:]] == [
         "scavio_map_website",
         "scavio_crawl_website",
