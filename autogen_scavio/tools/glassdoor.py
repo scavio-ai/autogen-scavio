@@ -1,8 +1,8 @@
 """Scavio Glassdoor tools for AutoGen.
 
-4 endpoints. 1 credit flat on all four endpoints. Addressing reviews or salaries by
+4 endpoints. 2 credits flat on all four endpoints. Addressing reviews or salaries by
 employer_id takes an extra lookup where the url form does not; the price to you
-is 1 either way, but passing back reviews_url / salaries_url is the faster path.
+is 2 either way, but passing back reviews_url / salaries_url is the faster path.
 
 LOOKUP FIRST: create_glassdoor_companies_tool is the entry point. Every other Glassdoor
 endpoint is keyed by an id that only exists inside Glassdoor's own URLs, so a caller
@@ -50,7 +50,7 @@ def create_glassdoor_companies_tool() -> FunctionTool:
         description=(
             "START HERE. Resolve a company NAME to the employer_id every other "
             "Glassdoor method is keyed by, ranked by Glassdoor and de-duplicated. "
-            "Costs 1 credit."
+            "Costs 2 credits."
         ),
     )
 
@@ -123,7 +123,7 @@ def create_glassdoor_company_tool() -> FunctionTool:
             "per-category ratings, star distribution, CEO approval, awards, FAQ and "
             "the five server-rendered reviews. Also returns reviews_url and "
             "salaries_url, which reviews() and salaries() accept as url to save a "
-            "fetch. Provide employer_id or url. Costs 1 credit."
+            "fetch. Provide employer_id or url. Costs 2 credits."
         ),
     )
 
@@ -218,8 +218,8 @@ def create_glassdoor_reviews_tool() -> FunctionTool:
             "employment status and employer response, plus complete rating "
             "statistics, star distribution, aggregate pro/con highlight terms and "
             "per-job-title review counts. There is no page param: move the window "
-            "with category and employment_status. Provide employer_id or url. Costs 1 "
-            "credit."
+            "with category and employment_status. Provide employer_id or url. Costs 2 "
+            "credits."
         ),
     )
 
@@ -298,6 +298,6 @@ def create_glassdoor_salaries_tool() -> FunctionTool:
             "total-pay percentiles P10-P90 with medians called out, sample counts, "
             "currency, pay period and last-reported date. The figures are Glassdoor's "
             "ESTIMATES for the title, not individual reported salaries. Provide "
-            "employer_id or url. Costs 1 credit."
+            "employer_id or url. Costs 2 credits."
         ),
     )

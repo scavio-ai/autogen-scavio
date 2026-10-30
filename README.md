@@ -363,10 +363,10 @@ tools here. Requires `scavio>=0.23.0` (0.8.0 raises the floor).
 | Airbnb | `scavio_airbnb_search` | Airbnb stays: stay-total and per-night price with the full discount ledger, rating... |
 | Airbnb | `scavio_airbnb_listing` | One Airbnb listing in full: description, capacity, the complete grouped amenity list... |
 | Airbnb | `scavio_airbnb_reviews` | Airbnb review BODIES with per-review rating, date, and reviewer name/photo/location |
-| Glassdoor | `scavio_glassdoor_companies` | Search Glassdoor by company NAME and resolve it to the employer_id every other endpoint... |
-| Glassdoor | `scavio_glassdoor_company` | Glassdoor employer profile: ratings, star distribution, CEO approval, size/revenue bands... |
-| Glassdoor | `scavio_glassdoor_reviews` | Up to THREE full Glassdoor reviews with per-axis scores, pros, cons, advice, employer... |
-| Glassdoor | `scavio_glassdoor_salaries` | Glassdoor salaries by job title: base-pay and total-pay percentiles P10-P90 with medians... |
+| Glassdoor | `scavio_glassdoor_companies` | Search Glassdoor by company NAME and resolve it to the employer_id every other endpoint... (2 credits) |
+| Glassdoor | `scavio_glassdoor_company` | Glassdoor employer profile: ratings, star distribution, CEO approval, size/revenue bands... (2 credits) |
+| Glassdoor | `scavio_glassdoor_reviews` | Up to THREE full Glassdoor reviews with per-axis scores, pros, cons, advice, employer... (2 credits) |
+| Glassdoor | `scavio_glassdoor_salaries` | Glassdoor salaries by job title: base-pay and total-pay percentiles P10-P90 with medians... (2 credits) |
 | Yelp | `scavio_yelp_search` | Businesses in Yelp's ranked order: rating, review count, price band, categories, address... (2 credits) |
 | Yelp | `scavio_yelp_business` | One Yelp business in full: per-star histogram, price band, address and coordinates... (2 credits) |
 | Yelp | `scavio_yelp_reviews` | A page of Yelp reviews: rating, full text, language, author profile and expertise counts... (2 credits) |
@@ -417,7 +417,7 @@ before it picks. Most endpoints are 1 credit; these are the exceptions:
 | Every other Instagram tool | 10 |
 | `scavio_linkedin_person_posts`, `scavio_linkedin_company_posts`, `scavio_linkedin_search_jobs`, `scavio_linkedin_post_comments` | 10 |
 | `scavio_linkedin_job` | 30 |
-| Every Home Depot, Tripadvisor, Indeed, Yelp, Google Play and Capterra tool | 2 |
+| Every Home Depot, Tripadvisor, Indeed, Glassdoor, Yelp, Google Play and Capterra tool | 2 |
 | Every G2 tool | 5 |
 | `scavio_kuaishou_video` | 2 |
 | `scavio_kuaishou_profile`, `scavio_kuaishou_search`, `scavio_kuaishou_search_videos`, `scavio_kuaishou_search_users`, `scavio_kuaishou_search_live` | 10 |
